@@ -227,7 +227,7 @@ const PlanilhaOrcamentoAditivo = () => {
                   </SelectTrigger>
                   <SelectContent>
                     <SelectItem value="1">Contrato</SelectItem>
-                    <SelectItem value="2">ARP</SelectItem>
+                    <SelectItem value="2">Ata de Registro de Preços</SelectItem>
                   </SelectContent>
                 </Select>
               </div>
