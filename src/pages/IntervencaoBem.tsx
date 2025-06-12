@@ -37,7 +37,7 @@ const IntervencaoBem = () => {
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;
-    a.download = 'IntervencaoBem.txt';
+    a.download = 'IntervencaoXBem.txt';
     document.body.appendChild(a);
     a.click();
     document.body.removeChild(a);
