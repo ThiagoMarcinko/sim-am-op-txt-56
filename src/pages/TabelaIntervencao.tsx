@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -94,7 +93,7 @@ const TabelaIntervencao = () => {
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;
-    a.download = 'tabela_intervencao.txt';
+    a.download = 'Intervencao.txt';
     document.body.appendChild(a);
     a.click();
     document.body.removeChild(a);
