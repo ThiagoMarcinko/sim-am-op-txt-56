@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -74,6 +73,12 @@ const ExecucaoIndiretaAditivo = () => {
       ...prev,
       [field]: value
     }));
+  };
+
+  const handleNumericInputChange = (field: keyof FormData, value: string) => {
+    // Allow only numbers
+    const numericValue = value.replace(/[^0-9]/g, '');
+    handleInputChange(field, numericValue);
   };
 
   const validateForm = (): boolean => {
@@ -264,9 +269,10 @@ const ExecucaoIndiretaAditivo = () => {
                 <div className="space-y-2">
                   <label className="text-sm font-medium">Código da Intervenção</label>
                   <Input
-                    type="number"
+                    type="text"
+                    inputMode="numeric"
                     value={formData.cdIntervencao}
-                    onChange={(e) => handleInputChange('cdIntervencao', e.target.value)}
+                    onChange={(e) => handleNumericInputChange('cdIntervencao', e.target.value)}
                     placeholder="Digite o código da intervenção"
                   />
                 </div>
@@ -306,9 +312,10 @@ const ExecucaoIndiretaAditivo = () => {
                 <div className="space-y-2">
                   <label className="text-sm font-medium">Número do Acompanhamento</label>
                   <Input
-                    type="number"
+                    type="text"
+                    inputMode="numeric"
                     value={formData.nrAcompanhamento}
-                    onChange={(e) => handleInputChange('nrAcompanhamento', e.target.value)}
+                    onChange={(e) => handleNumericInputChange('nrAcompanhamento', e.target.value)}
                     placeholder="Digite o número do acompanhamento"
                   />
                 </div>
@@ -348,12 +355,13 @@ const ExecucaoIndiretaAditivo = () => {
                 <div className="space-y-2">
                   <label className="text-sm font-medium">Número do Contrato (máx. 9 números)</label>
                   <Input
-                    type="number"
+                    type="text"
+                    inputMode="numeric"
                     value={formData.nrContrato}
                     onChange={(e) => {
-                      const value = e.target.value;
-                      if (value.length <= 9) {
-                        handleInputChange('nrContrato', value);
+                      const numericValue = e.target.value.replace(/[^0-9]/g, '');
+                      if (numericValue.length <= 9) {
+                        handleInputChange('nrContrato', numericValue);
                       }
                     }}
                     placeholder="Digite o número do contrato"
@@ -380,12 +388,13 @@ const ExecucaoIndiretaAditivo = () => {
                 <div className="space-y-2">
                   <label className="text-sm font-medium">CNPJ da Ent. de Origem do Contrato (máx. 15 números)</label>
                   <Input
-                    type="number"
+                    type="text"
+                    inputMode="numeric"
                     value={formData.nrCNPJOrigem}
                     onChange={(e) => {
-                      const value = e.target.value;
-                      if (value.length <= 15) {
-                        handleInputChange('nrCNPJOrigem', value);
+                      const numericValue = e.target.value.replace(/[^0-9]/g, '');
+                      if (numericValue.length <= 15) {
+                        handleInputChange('nrCNPJOrigem', numericValue);
                       }
                     }}
                     placeholder="Digite o CNPJ"
@@ -396,12 +405,13 @@ const ExecucaoIndiretaAditivo = () => {
                 <div className="space-y-2">
                   <label className="text-sm font-medium">Número do Aditivo do Contrato (máx. 9 números)</label>
                   <Input
-                    type="number"
+                    type="text"
+                    inputMode="numeric"
                     value={formData.nrAditivoContrato}
                     onChange={(e) => {
-                      const value = e.target.value;
-                      if (value.length <= 9) {
-                        handleInputChange('nrAditivoContrato', value);
+                      const numericValue = e.target.value.replace(/[^0-9]/g, '');
+                      if (numericValue.length <= 9) {
+                        handleInputChange('nrAditivoContrato', numericValue);
                       }
                     }}
                     placeholder="Digite o número do aditivo"

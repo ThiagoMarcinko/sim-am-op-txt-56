@@ -46,6 +46,12 @@ const PlanilhaOrcamentoAditivo = () => {
     }));
   };
 
+  const handleNumericInputChange = (field: keyof FormDataAditivoContrato, value: string) => {
+    // Allow only numbers
+    const numericValue = value.replace(/[^0-9]/g, '');
+    updateFormData(field, numericValue);
+  };
+
   const validateForm = (): boolean => {
     for (const [key, value] of Object.entries(formData)) {
       if (value.trim() === '') {
@@ -142,8 +148,9 @@ const PlanilhaOrcamentoAditivo = () => {
                 <Input
                   id="cdIntervencao"
                   type="text"
+                  inputMode="numeric"
                   value={formData.cdIntervencao}
-                  onChange={e => updateFormData('cdIntervencao', e.target.value)}
+                  onChange={e => handleNumericInputChange('cdIntervencao', e.target.value)}
                   placeholder="Digite o código"
                 />
               </div>
@@ -207,11 +214,12 @@ const PlanilhaOrcamentoAditivo = () => {
                 <Input
                   id="cdControleLeiAto"
                   type="text"
+                  inputMode="numeric"
                   value={formData.cdControleLeiAto}
                   onChange={e => {
-                    const value = e.target.value;
-                    if (value.length <= 7) {
-                      updateFormData('cdControleLeiAto', value);
+                    const numericValue = e.target.value.replace(/[^0-9]/g, '');
+                    if (numericValue.length <= 7) {
+                      updateFormData('cdControleLeiAto', numericValue);
                     }
                   }}
                   placeholder="Máximo 7 números"
@@ -255,8 +263,9 @@ const PlanilhaOrcamentoAditivo = () => {
                 <Input
                   id="nrContrato"
                   type="text"
+                  inputMode="numeric"
                   value={formData.nrContrato}
-                  onChange={e => updateFormData('nrContrato', e.target.value)}
+                  onChange={e => handleNumericInputChange('nrContrato', e.target.value)}
                   placeholder="Digite o número do contrato"
                 />
               </div>
@@ -285,8 +294,9 @@ const PlanilhaOrcamentoAditivo = () => {
                 <Input
                   id="nrCNPJOrigem"
                   type="text"
+                  inputMode="numeric"
                   value={formData.nrCNPJOrigem}
-                  onChange={e => updateFormData('nrCNPJOrigem', e.target.value)}
+                  onChange={e => handleNumericInputChange('nrCNPJOrigem', e.target.value)}
                   placeholder="Digite o CNPJ de origem"
                 />
               </div>
@@ -297,8 +307,9 @@ const PlanilhaOrcamentoAditivo = () => {
                 <Input
                   id="nrAditivoContrato"
                   type="text"
+                  inputMode="numeric"
                   value={formData.nrAditivoContrato}
-                  onChange={e => updateFormData('nrAditivoContrato', e.target.value)}
+                  onChange={e => handleNumericInputChange('nrAditivoContrato', e.target.value)}
                   placeholder="Digite o número do aditivo"
                 />
               </div>

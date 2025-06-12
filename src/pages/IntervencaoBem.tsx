@@ -112,6 +112,12 @@ const IntervencaoBem = () => {
     }));
   };
 
+  const handleNumericInputChange = (field: keyof FormData, value: string) => {
+    // Allow only numbers
+    const numericValue = value.replace(/[^0-9]/g, '');
+    updateFormData(field, numericValue);
+  };
+
   return (
     <div className="p-6">
       <div className="max-w-4xl mx-auto">
@@ -139,9 +145,10 @@ const IntervencaoBem = () => {
                   <Label htmlFor="cdIntervencao">Código da Intervenção</Label>
                   <Input
                     id="cdIntervencao"
-                    type="number"
+                    type="text"
+                    inputMode="numeric"
                     value={formData.cdIntervencao}
-                    onChange={(e) => updateFormData('cdIntervencao', e.target.value)}
+                    onChange={(e) => handleNumericInputChange('cdIntervencao', e.target.value)}
                     placeholder="Digite o código"
                   />
                 </div>
@@ -167,9 +174,10 @@ const IntervencaoBem = () => {
                   <Label htmlFor="cdBem">Código do Bem</Label>
                   <Input
                     id="cdBem"
-                    type="number"
+                    type="text"
+                    inputMode="numeric"
                     value={formData.cdBem}
-                    onChange={(e) => updateFormData('cdBem', e.target.value)}
+                    onChange={(e) => handleNumericInputChange('cdBem', e.target.value)}
                     placeholder="Digite o código do bem"
                   />
                 </div>

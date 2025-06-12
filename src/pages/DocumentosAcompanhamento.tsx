@@ -136,10 +136,16 @@ const DocumentosAcompanhamento = () => {
     }));
   };
 
+  const handleNumericInputChange = (field: keyof FormData, value: string) => {
+    // Allow only numbers
+    const numericValue = value.replace(/[^0-9]/g, '');
+    updateFormData(field, numericValue);
+  };
+
   const handleControleLeiAtoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value;
-    if (value === '' || (/^\d+$/.test(value) && value.length <= 7)) {
-      updateFormData('cdControleLeiAto', value);
+    const numericValue = e.target.value.replace(/[^0-9]/g, '');
+    if (numericValue.length <= 7) {
+      updateFormData('cdControleLeiAto', numericValue);
     }
   };
 
@@ -170,9 +176,10 @@ const DocumentosAcompanhamento = () => {
                   <Label htmlFor="cdIntervencao">Código da Intervenção</Label>
                   <Input
                     id="cdIntervencao"
-                    type="number"
+                    type="text"
+                    inputMode="numeric"
                     value={formData.cdIntervencao}
-                    onChange={(e) => updateFormData('cdIntervencao', e.target.value)}
+                    onChange={(e) => handleNumericInputChange('cdIntervencao', e.target.value)}
                     placeholder="Digite o código"
                   />
                 </div>
@@ -212,9 +219,10 @@ const DocumentosAcompanhamento = () => {
                   <Label htmlFor="nrAcompanhamento">Número do Acompanhamento</Label>
                   <Input
                     id="nrAcompanhamento"
-                    type="number"
+                    type="text"
+                    inputMode="numeric"
                     value={formData.nrAcompanhamento}
-                    onChange={(e) => updateFormData('nrAcompanhamento', e.target.value)}
+                    onChange={(e) => handleNumericInputChange('nrAcompanhamento', e.target.value)}
                     placeholder="Digite o número"
                   />
                 </div>
@@ -224,6 +232,7 @@ const DocumentosAcompanhamento = () => {
                   <Input
                     id="cdControleLeiAto"
                     type="text"
+                    inputMode="numeric"
                     maxLength={7}
                     value={formData.cdControleLeiAto}
                     onChange={handleControleLeiAtoChange}
