@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -160,21 +161,42 @@ const PlanilhaOrcamentoAditivo = () => {
   };
 
   const generateTxtFile = () => {
+    console.log('=== DEBUG: generateTxtFile called ===');
+    
     if (!validateForm()) {
+      console.log('DEBUG: Validation failed');
       return;
     }
 
+    console.log('DEBUG: FormData:', formData);
+
     const content = `${formData.idPessoa}|${formData.cdIntervencao}|${formData.nrAnoIntervencao}|${formData.tipoDocumentoResponsavelOrcamento}|${formData.nrDocumentoResponsavelOrcamento}|${formData.cdControleLeiAto}|${formData.idTipoAtoContrato}|${formData.idTipoOrigemContrato}|${formData.nrContrato}|${formData.nrAnoContrato}|${formData.nrCNPJOrigem}|${formData.nrAditivoContrato}|${formData.nrAnoAditivoContrato}|`;
 
-    const blob = new Blob([content], { type: 'text/plain' });
+    console.log('DEBUG: Content to be written:', content);
+    console.log('DEBUG: Content length:', content.length);
+    console.log('DEBUG: Content as array:', content.split(''));
+
+    const blob = new Blob([content], { type: 'text/plain;charset=utf-8' });
+    console.log('DEBUG: Blob created:', blob);
+    console.log('DEBUG: Blob size:', blob.size);
+    console.log('DEBUG: Blob type:', blob.type);
+
     const url = window.URL.createObjectURL(blob);
     const link = document.createElement('a');
     link.href = url;
     link.download = 'PlanilhaExecucaoIndiretaAditivo.txt';
+    link.style.display = 'none';
     document.body.appendChild(link);
+    
+    console.log('DEBUG: About to click download link');
     link.click();
-    document.body.removeChild(link);
-    window.URL.revokeObjectURL(url);
+    
+    // Cleanup
+    setTimeout(() => {
+      document.body.removeChild(link);
+      window.URL.revokeObjectURL(url);
+      console.log('DEBUG: Cleanup completed');
+    }, 100);
 
     toast({
       title: "Arquivo Gerado",
