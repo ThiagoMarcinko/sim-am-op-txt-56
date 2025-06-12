@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -32,6 +31,10 @@ const IntervencaoAcaoPlanejamento = () => {
   ];
 
   const anos = ['2023', '2024', '2025', '2026', '2027', '2028'];
+
+  const isFormValid = () => {
+    return Object.values(formData).every(value => value !== '');
+  };
 
   const handleInputChange = (field: keyof FormData, value: string) => {
     setFormData(prev => ({
@@ -243,7 +246,11 @@ const IntervencaoAcaoPlanejamento = () => {
               </div>
 
               <div className="flex gap-4 justify-center pt-6">
-                <Button type="submit" className="px-8">
+                <Button 
+                  type="submit" 
+                  disabled={!isFormValid()}
+                  className="px-8"
+                >
                   Gerar Arquivo
                 </Button>
                 <Button type="button" variant="outline" onClick={handleClear} className="px-8">

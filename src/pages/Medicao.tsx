@@ -28,6 +28,10 @@ const Medicao = () => {
     nrPercentualFisicoMedicao: '',
   });
 
+  const isFormValid = () => {
+    return Object.values(formData).every(value => value !== '');
+  };
+
   const validateForm = (): boolean => {
     if (!formData.idPessoa) {
       toast({
@@ -269,7 +273,11 @@ const Medicao = () => {
               </div>
 
               <div className="flex gap-4 justify-center pt-6">
-                <Button type="submit" className="px-8">
+                <Button 
+                  type="submit" 
+                  disabled={!isFormValid()}
+                  className="px-8"
+                >
                   Gerar Arquivo
                 </Button>
                 <Button type="button" variant="outline" onClick={handleClear} className="px-8">

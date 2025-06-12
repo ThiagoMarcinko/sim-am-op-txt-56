@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -22,6 +21,10 @@ const IntervencaoBem = () => {
     nrAnoIntervencao: '',
     cdBem: '',
   });
+
+  const isFormValid = () => {
+    return Object.values(formData).every(value => value !== '');
+  };
 
   const validateForm = (): boolean => {
     if (!formData.idPessoa) {
@@ -173,7 +176,11 @@ const IntervencaoBem = () => {
               </div>
 
               <div className="flex gap-4 justify-center pt-6">
-                <Button type="submit" className="px-8">
+                <Button 
+                  type="submit" 
+                  disabled={!isFormValid()}
+                  className="px-8"
+                >
                   Gerar Arquivo
                 </Button>
                 <Button type="button" variant="outline" onClick={handleClear} className="px-8">

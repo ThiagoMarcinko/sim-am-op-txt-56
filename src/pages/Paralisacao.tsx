@@ -15,6 +15,15 @@ const Paralisacao = () => {
   const [nrAcompanhamento, setNrAcompanhamento] = useState('');
   const [idMotivoParalisacao, setIdMotivoParalisacao] = useState('');
 
+  const isFormValid = () => {
+    return idPessoa !== '' && 
+           cdIntervencao !== '' && 
+           nrAnoIntervencao !== '' && 
+           idOrigemAcompanhamento !== '' && 
+           nrAcompanhamento !== '' && 
+           idMotivoParalisacao !== '';
+  };
+
   const validateForm = (): boolean => {
     if (!idPessoa) {
       toast({
@@ -206,7 +215,11 @@ const Paralisacao = () => {
             </div>
 
             <div className="flex justify-center gap-4 pt-6">
-              <Button onClick={handleGerarArquivo} className="bg-gray-600 hover:bg-gray-700">
+              <Button 
+                onClick={handleGerarArquivo} 
+                disabled={!isFormValid()}
+                className="bg-gray-600 hover:bg-gray-700"
+              >
                 Gerar Arquivo
               </Button>
               <Button variant="outline" onClick={handleLimparCampos}>
