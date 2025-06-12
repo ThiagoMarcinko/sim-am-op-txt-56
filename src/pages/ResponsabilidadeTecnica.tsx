@@ -1,10 +1,10 @@
-
 import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { useToast } from '@/hooks/use-toast';
 
 interface FormData {
   idPessoa: string;
@@ -18,6 +18,7 @@ interface FormData {
 }
 
 const ResponsabilidadeTecnica = () => {
+  const { toast } = useToast();
   const [formData, setFormData] = useState<FormData>({
     idPessoa: '',
     cdIntervencao: '',
@@ -54,6 +55,29 @@ const ResponsabilidadeTecnica = () => {
     a.click();
     document.body.removeChild(a);
     URL.revokeObjectURL(url);
+
+    toast({
+      title: "Sucesso",
+      description: "Arquivo ResponsabilidadeTecnica.txt gerado com sucesso!",
+    });
+  };
+
+  const handleClear = () => {
+    setFormData({
+      idPessoa: '',
+      cdIntervencao: '',
+      nrAnoIntervencao: '',
+      TipoDocumentoPessoa: '',
+      nrDocumentoResponsavelTecnico: '',
+      tipoDocumentoOrdemClasse: '',
+      nRT: '',
+      idTipoResponsabilidadeTecnica: '',
+    });
+
+    toast({
+      title: "Formulário Limpo",
+      description: "Todos os campos foram limpos.",
+    });
   };
 
   const updateFormData = (field: keyof FormData, value: string) => {
@@ -200,13 +224,16 @@ const ResponsabilidadeTecnica = () => {
               </div>
             </div>
 
-            <div className="flex justify-center pt-6">
+            <div className="flex gap-4 justify-center pt-6">
               <Button
                 onClick={generateTxtFile}
                 disabled={!isFormValid()}
-                className="px-8 py-3 text-lg"
+                className="px-8"
               >
-                Gerar .txt
+                Gerar Arquivo
+              </Button>
+              <Button type="button" variant="outline" onClick={handleClear} className="px-8">
+                Limpar Campos
               </Button>
             </div>
           </CardContent>

@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -10,6 +9,7 @@ import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover
 import { CalendarIcon } from 'lucide-react';
 import { format } from 'date-fns';
 import { cn } from '@/lib/utils';
+import { useToast } from '@/hooks/use-toast';
 
 interface FormData {
   idPessoa: string;
@@ -31,6 +31,7 @@ interface FormData {
 }
 
 const TabelaIntervencao = () => {
+  const { toast } = useToast();
   const [formData, setFormData] = useState<FormData>({
     idPessoa: '',
     cdIntervencao: '',
@@ -99,6 +100,37 @@ const TabelaIntervencao = () => {
     a.click();
     document.body.removeChild(a);
     URL.revokeObjectURL(url);
+
+    toast({
+      title: "Sucesso",
+      description: "Arquivo Intervencao.txt gerado com sucesso!",
+    });
+  };
+
+  const handleClear = () => {
+    setFormData({
+      idPessoa: '',
+      cdIntervencao: '',
+      nrAnoIntervencao: '',
+      idTipoIntervencao: '',
+      idClassificacaoIntervencao: '',
+      nomeIntervencao: '',
+      idTipoObra: '',
+      idClassificacaoObra: '',
+      dsObjeto: '',
+      nrMedida: '',
+      idUnidadeMedidaIntervencao: '',
+      vlIntervencao: '',
+      dtBaseIntervencao: undefined,
+      nrPrazoExecucao: '',
+      dtInicio: undefined,
+      idTipoRegimeIntervencao: '',
+    });
+
+    toast({
+      title: "Formulário Limpo",
+      description: "Todos os campos foram limpos.",
+    });
   };
 
   const updateFormData = (field: keyof FormData, value: string | Date | undefined) => {
@@ -403,13 +435,16 @@ const TabelaIntervencao = () => {
               </div>
             </div>
 
-            <div className="flex justify-center pt-6">
+            <div className="flex gap-4 justify-center pt-6">
               <Button
                 onClick={generateTxtFile}
                 disabled={!isFormValid()}
-                className="px-8 py-3 text-lg"
+                className="px-8"
               >
-                Gerar .txt
+                Gerar Arquivo
+              </Button>
+              <Button type="button" variant="outline" onClick={handleClear} className="px-8">
+                Limpar Campos
               </Button>
             </div>
           </CardContent>
