@@ -105,12 +105,7 @@ const IntervencaoAcaoPlanejamento = () => {
       return;
     }
 
-    const content = `Identificação da Entidade: ${formData.idPessoa}
-Origem da Ação: ${formData.idOrigemAcao}
-Código da Ação: ${formData.cdAcao}
-Código Controle Lei Ato: ${formData.cdControleLeiAto}
-Código da Intervenção: ${formData.cdIntervencao}
-Ano da Intervenção: ${formData.nrAnoIntervencao}`;
+    const content = `${formData.idPessoa}|${formData.idOrigemAcao}|${formData.cdAcao}|${formData.cdControleLeiAto}|${formData.cdIntervencao}|${formData.nrAnoIntervencao}|`;
 
     const blob = new Blob([content], { type: 'text/plain' });
     const url = URL.createObjectURL(blob);

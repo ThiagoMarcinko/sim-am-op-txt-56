@@ -1,12 +1,13 @@
-
 import React, { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
+import { useToast } from '@/hooks/use-toast';
 
 const Paralisacao = () => {
+  const { toast } = useToast();
   const [idPessoa, setIdPessoa] = useState('');
   const [cdIntervencao, setCdIntervencao] = useState('');
   const [nrAnoIntervencao, setNrAnoIntervencao] = useState('');
@@ -14,15 +15,84 @@ const Paralisacao = () => {
   const [nrAcompanhamento, setNrAcompanhamento] = useState('');
   const [idMotivoParalisacao, setIdMotivoParalisacao] = useState('');
 
+  const validateForm = (): boolean => {
+    if (!idPessoa) {
+      toast({
+        title: "Erro de Validação",
+        description: "Selecione a Identificação da Entidade",
+        variant: "destructive",
+      });
+      return false;
+    }
+
+    if (!cdIntervencao) {
+      toast({
+        title: "Erro de Validação",
+        description: "Código da Intervenção é obrigatório",
+        variant: "destructive",
+      });
+      return false;
+    }
+
+    if (!nrAnoIntervencao) {
+      toast({
+        title: "Erro de Validação",
+        description: "Selecione o Ano da Intervenção",
+        variant: "destructive",
+      });
+      return false;
+    }
+
+    if (!idOrigemAcompanhamento) {
+      toast({
+        title: "Erro de Validação",
+        description: "Selecione a Origem do Acompanhamento",
+        variant: "destructive",
+      });
+      return false;
+    }
+
+    if (!nrAcompanhamento) {
+      toast({
+        title: "Erro de Validação",
+        description: "Número do Acompanhamento é obrigatório",
+        variant: "destructive",
+      });
+      return false;
+    }
+
+    if (!idMotivoParalisacao) {
+      toast({
+        title: "Erro de Validação",
+        description: "Selecione o Motivo da Paralisação",
+        variant: "destructive",
+      });
+      return false;
+    }
+
+    return true;
+  };
+
   const handleGerarArquivo = () => {
-    console.log('Gerando arquivo...');
-    console.log({
-      idPessoa,
-      cdIntervencao,
-      nrAnoIntervencao,
-      idOrigemAcompanhamento,
-      nrAcompanhamento,
-      idMotivoParalisacao
+    if (!validateForm()) {
+      return;
+    }
+
+    const content = `${idPessoa}|${cdIntervencao}|${nrAnoIntervencao}|${idOrigemAcompanhamento}|${nrAcompanhamento}|${idMotivoParalisacao}|`;
+
+    const blob = new Blob([content], { type: 'text/plain' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'Paralisacao.txt';
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+
+    toast({
+      title: "Sucesso",
+      description: "Arquivo Paralisacao.txt gerado com sucesso!",
     });
   };
 
@@ -33,6 +103,11 @@ const Paralisacao = () => {
     setIdOrigemAcompanhamento('');
     setNrAcompanhamento('');
     setIdMotivoParalisacao('');
+
+    toast({
+      title: "Formulário Limpo",
+      description: "Todos os campos foram limpos.",
+    });
   };
 
   return (

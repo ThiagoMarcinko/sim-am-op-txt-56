@@ -148,17 +148,7 @@ const PlanilhaOrcamentoContrato = () => {
       return;
     }
 
-    const txtContent = `idPessoa=${formData.idPessoa}
-cdIntervencao=${formData.cdIntervencao}
-nrAnoIntervencao=${formData.nrAnoIntervencao}
-tipoDocumentoResponsavelOrcamento=${formData.tipoDocumentoResponsavelOrcamento}
-nrDocumentoResponsavelOrcamento=${formData.nrDocumentoResponsavelOrcamento}
-cdControleLeiAto=${formData.cdControleLeiAto}
-idTipoAtoContrato=${formData.idTipoAtoContrato}
-idTipoOrigemContrato=${formData.idTipoOrigemContrato}
-nrContrato=${formData.nrContrato}
-nrAnoContrato=${formData.nrAnoContrato}
-nrCNPJOrigem=${formData.nrCNPJOrigem}`;
+    const txtContent = `${formData.idPessoa}|${formData.cdIntervencao}|${formData.nrAnoIntervencao}|${formData.tipoDocumentoResponsavelOrcamento}|${formData.nrDocumentoResponsavelOrcamento}|${formData.cdControleLeiAto}|${formData.idTipoAtoContrato}|${formData.idTipoOrigemContrato}|${formData.nrContrato}|${formData.nrAnoContrato}|${formData.nrCNPJOrigem}|`;
 
     const blob = new Blob([txtContent], { type: 'text/plain' });
     const url = window.URL.createObjectURL(blob);

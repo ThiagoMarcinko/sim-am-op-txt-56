@@ -92,12 +92,7 @@ const DocumentosAcompanhamento = () => {
       return;
     }
 
-    const content = `Identificação da Entidade: ${formData.idPessoa}
-Código da Intervenção: ${formData.cdIntervencao}
-Ano da Intervenção: ${formData.nrAnoIntervencao}
-Origem do Acompanhamento: ${formData.idOrigemAcompanhamento}
-Número do Acompanhamento: ${formData.nrAcompanhamento}
-Código Controle Lei Ato: ${formData.cdControleLeiAto}`;
+    const content = `${formData.idPessoa}|${formData.cdIntervencao}|${formData.nrAnoIntervencao}|${formData.idOrigemAcompanhamento}|${formData.nrAcompanhamento}|${formData.cdControleLeiAto}|`;
 
     const blob = new Blob([content], { type: 'text/plain' });
     const url = URL.createObjectURL(blob);

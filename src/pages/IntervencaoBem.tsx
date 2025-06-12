@@ -71,10 +71,7 @@ const IntervencaoBem = () => {
       return;
     }
 
-    const content = `Identificação da Entidade: ${formData.idPessoa}
-Código da Intervenção: ${formData.cdIntervencao}
-Ano da Intervenção: ${formData.nrAnoIntervencao}
-Código do Bem: ${formData.cdBem}`;
+    const content = `${formData.idPessoa}|${formData.cdIntervencao}|${formData.nrAnoIntervencao}|${formData.cdBem}|`;
 
     const blob = new Blob([content], { type: 'text/plain' });
     const url = URL.createObjectURL(blob);

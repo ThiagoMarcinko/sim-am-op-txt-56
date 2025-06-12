@@ -35,16 +35,16 @@ const ResponsabilidadeTecnica = () => {
   };
 
   const generateTxtFile = () => {
-    const txtContent = [
-      formData.idPessoa,
-      formData.cdIntervencao,
-      formData.nrAnoIntervencao,
-      formData.TipoDocumentoPessoa,
-      formData.nrDocumentoResponsavelTecnico,
-      formData.tipoDocumentoOrdemClasse,
-      formData.nRT,
-      formData.idTipoResponsabilidadeTecnica
-    ].join('|') + '|';
+    if (!isFormValid()) {
+      toast({
+        title: "Erro de Validação",
+        description: "Todos os campos são obrigatórios",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    const txtContent = `${formData.idPessoa}|${formData.cdIntervencao}|${formData.nrAnoIntervencao}|${formData.TipoDocumentoPessoa}|${formData.nrDocumentoResponsavelTecnico}|${formData.tipoDocumentoOrdemClasse}|${formData.nRT}|${formData.idTipoResponsabilidadeTecnica}|`;
 
     const blob = new Blob([txtContent], { type: 'text/plain' });
     const url = URL.createObjectURL(blob);

@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -192,18 +191,7 @@ const ExecucaoIndiretaAditivo = () => {
       return;
     }
 
-    const content = `Identificação da Entidade: ${formData.idPessoa}
-Código da Intervenção: ${formData.cdIntervencao}
-Ano da Intervenção: ${formData.nrAnoIntervencao}
-Origem do Acompanhamento: ${formData.idOrigemAcompanhamento}
-Número do Acompanhamento: ${formData.nrAcompanhamento}
-Tipo do Ato do Contrato: ${formData.idTipoAtoContrato}
-Tipo de Origem do Contrato: ${formData.idTipoOrigemContrato}
-Número do Contrato: ${formData.nrContrato}
-Ano do Contrato: ${formData.nrAnoContrato}
-CNPJ da Ent. de Origem do Contrato: ${formData.nrCNPJOrigem}
-Número do Aditivo do Contrato: ${formData.nrAditivoContrato}
-Ano do Aditivo: ${formData.nrAnoAditivo}`;
+    const content = `${formData.idPessoa}|${formData.cdIntervencao}|${formData.nrAnoIntervencao}|${formData.idOrigemAcompanhamento}|${formData.nrAcompanhamento}|${formData.idTipoAtoContrato}|${formData.idTipoOrigemContrato}|${formData.nrContrato}|${formData.nrAnoContrato}|${formData.nrCNPJOrigem}|${formData.nrAditivoContrato}|${formData.nrAnoAditivo}|`;
 
     const blob = new Blob([content], { type: 'text/plain' });
     const url = URL.createObjectURL(blob);

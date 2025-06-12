@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -137,16 +136,7 @@ const Acompanhamento = () => {
       return;
     }
 
-    const content = `Identificação da Entidade: ${formData.idPessoa}
-Código da Intervenção: ${formData.cdIntervencao}
-Ano da Intervenção: ${formData.nrAnoIntervencao}
-Origem do Acompanhamento: ${formData.idOrigemAcompanhamento}
-Número do Acompanhamento: ${formData.nrAcompanhamento}
-Data do Acompanhamento: ${formData.dtAcompanhamento}
-Tipo do Acompanhamento: ${formData.idTipoAcompanhamento}
-Tipo de Documento Responsável: ${formData.tpDocumentoResponsavelAcompanhamento}
-Número do Documento Responsável: ${formData.nrDocumentoResponsavelAcompanhamento}
-Observações: ${formData.dsObservacao}`;
+    const content = `${formData.idPessoa}|${formData.cdIntervencao}|${formData.nrAnoIntervencao}|${formData.idOrigemAcompanhamento}|${formData.nrAcompanhamento}|${formData.dtAcompanhamento}|${formData.idTipoAcompanhamento}|${formData.tpDocumentoResponsavelAcompanhamento}|${formData.nrDocumentoResponsavelAcompanhamento}|${formData.dsObservacao}|`;
 
     const blob = new Blob([content], { type: 'text/plain' });
     const url = URL.createObjectURL(blob);
