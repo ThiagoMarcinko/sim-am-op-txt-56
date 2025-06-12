@@ -4,7 +4,6 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { useToast } from '@/hooks/use-toast';
-import Layout from '@/components/Layout';
 
 interface FormData {
   idPessoa: string;
@@ -232,211 +231,209 @@ const ExecucaoIndiretaAditivo = () => {
   };
 
   return (
-    <Layout>
-      <div className="p-6">
-        <div className="max-w-4xl mx-auto">
-          <Card>
-            <CardHeader>
-              <CardTitle className="text-3xl font-bold text-center">Execução Indireta - Aditivo</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <form onSubmit={handleSubmit} className="space-y-6">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  <div className="space-y-2">
-                    <label className="text-sm font-medium">Identificação da Entidade</label>
-                    <Select value={formData.idPessoa} onValueChange={(value) => handleInputChange('idPessoa', value)}>
-                      <SelectTrigger>
-                        <SelectValue placeholder="Selecione a entidade" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        {entidades.map((entidade) => (
-                          <SelectItem key={entidade.value} value={entidade.value}>
-                            {entidade.label}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
-                  </div>
-
-                  <div className="space-y-2">
-                    <label className="text-sm font-medium">Código da Intervenção</label>
-                    <Input
-                      type="number"
-                      value={formData.cdIntervencao}
-                      onChange={(e) => handleInputChange('cdIntervencao', e.target.value)}
-                      placeholder="Digite o código da intervenção"
-                    />
-                  </div>
-
-                  <div className="space-y-2">
-                    <label className="text-sm font-medium">Ano da Intervenção</label>
-                    <Select value={formData.nrAnoIntervencao} onValueChange={(value) => handleInputChange('nrAnoIntervencao', value)}>
-                      <SelectTrigger>
-                        <SelectValue placeholder="Selecione o ano" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        {anosIntervencao.map((ano) => (
-                          <SelectItem key={ano} value={ano}>
-                            {ano}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
-                  </div>
-
-                  <div className="space-y-2">
-                    <label className="text-sm font-medium">Origem do Acompanhamento</label>
-                    <Select value={formData.idOrigemAcompanhamento} onValueChange={(value) => handleInputChange('idOrigemAcompanhamento', value)}>
-                      <SelectTrigger>
-                        <SelectValue placeholder="Selecione a origem" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        {origensAcompanhamento.map((origem) => (
-                          <SelectItem key={origem.value} value={origem.value}>
-                            {origem.label}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
-                  </div>
-
-                  <div className="space-y-2">
-                    <label className="text-sm font-medium">Número do Acompanhamento</label>
-                    <Input
-                      type="number"
-                      value={formData.nrAcompanhamento}
-                      onChange={(e) => handleInputChange('nrAcompanhamento', e.target.value)}
-                      placeholder="Digite o número do acompanhamento"
-                    />
-                  </div>
-
-                  <div className="space-y-2">
-                    <label className="text-sm font-medium">Tipo do Ato do Contrato</label>
-                    <Select value={formData.idTipoAtoContrato} onValueChange={(value) => handleInputChange('idTipoAtoContrato', value)}>
-                      <SelectTrigger>
-                        <SelectValue placeholder="Selecione o tipo" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        {tiposAtoContrato.map((tipo) => (
-                          <SelectItem key={tipo.value} value={tipo.value}>
-                            {tipo.label}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
-                  </div>
-
-                  <div className="space-y-2">
-                    <label className="text-sm font-medium">Tipo de Origem do Contrato</label>
-                    <Select value={formData.idTipoOrigemContrato} onValueChange={(value) => handleInputChange('idTipoOrigemContrato', value)}>
-                      <SelectTrigger>
-                        <SelectValue placeholder="Selecione o tipo de origem" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        {tiposOrigemContrato.map((tipo) => (
-                          <SelectItem key={tipo.value} value={tipo.value}>
-                            {tipo.label}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
-                  </div>
-
-                  <div className="space-y-2">
-                    <label className="text-sm font-medium">Número do Contrato (máx. 9 números)</label>
-                    <Input
-                      type="number"
-                      value={formData.nrContrato}
-                      onChange={(e) => {
-                        const value = e.target.value;
-                        if (value.length <= 9) {
-                          handleInputChange('nrContrato', value);
-                        }
-                      }}
-                      placeholder="Digite o número do contrato"
-                      maxLength={9}
-                    />
-                  </div>
-
-                  <div className="space-y-2">
-                    <label className="text-sm font-medium">Ano do Contrato</label>
-                    <Select value={formData.nrAnoContrato} onValueChange={(value) => handleInputChange('nrAnoContrato', value)}>
-                      <SelectTrigger>
-                        <SelectValue placeholder="Selecione o ano" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        {anosContrato.map((ano) => (
-                          <SelectItem key={ano} value={ano}>
-                            {ano}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
-                  </div>
-
-                  <div className="space-y-2">
-                    <label className="text-sm font-medium">CNPJ da Ent. de Origem do Contrato (máx. 15 números)</label>
-                    <Input
-                      type="number"
-                      value={formData.nrCNPJOrigem}
-                      onChange={(e) => {
-                        const value = e.target.value;
-                        if (value.length <= 15) {
-                          handleInputChange('nrCNPJOrigem', value);
-                        }
-                      }}
-                      placeholder="Digite o CNPJ"
-                      maxLength={15}
-                    />
-                  </div>
-
-                  <div className="space-y-2">
-                    <label className="text-sm font-medium">Número do Aditivo do Contrato (máx. 9 números)</label>
-                    <Input
-                      type="number"
-                      value={formData.nrAditivoContrato}
-                      onChange={(e) => {
-                        const value = e.target.value;
-                        if (value.length <= 9) {
-                          handleInputChange('nrAditivoContrato', value);
-                        }
-                      }}
-                      placeholder="Digite o número do aditivo"
-                      maxLength={9}
-                    />
-                  </div>
-
-                  <div className="space-y-2">
-                    <label className="text-sm font-medium">Ano do Aditivo</label>
-                    <Select value={formData.nrAnoAditivo} onValueChange={(value) => handleInputChange('nrAnoAditivo', value)}>
-                      <SelectTrigger>
-                        <SelectValue placeholder="Selecione o ano" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        {anosAditivo.map((ano) => (
-                          <SelectItem key={ano} value={ano}>
-                            {ano}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
-                  </div>
+    <div className="p-6">
+      <div className="max-w-4xl mx-auto">
+        <Card>
+          <CardHeader>
+            <CardTitle className="text-3xl font-bold text-center">Execução Indireta - Aditivo</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <form onSubmit={handleSubmit} className="space-y-6">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div className="space-y-2">
+                  <label className="text-sm font-medium">Identificação da Entidade</label>
+                  <Select value={formData.idPessoa} onValueChange={(value) => handleInputChange('idPessoa', value)}>
+                    <SelectTrigger>
+                      <SelectValue placeholder="Selecione a entidade" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {entidades.map((entidade) => (
+                        <SelectItem key={entidade.value} value={entidade.value}>
+                          {entidade.label}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
                 </div>
 
-                <div className="flex gap-4 justify-center pt-6">
-                  <Button type="submit" className="px-8">
-                    Gerar Arquivo
-                  </Button>
-                  <Button type="button" variant="outline" onClick={handleClear} className="px-8">
-                    Limpar Campos
-                  </Button>
+                <div className="space-y-2">
+                  <label className="text-sm font-medium">Código da Intervenção</label>
+                  <Input
+                    type="number"
+                    value={formData.cdIntervencao}
+                    onChange={(e) => handleInputChange('cdIntervencao', e.target.value)}
+                    placeholder="Digite o código da intervenção"
+                  />
                 </div>
-              </form>
-            </CardContent>
-          </Card>
-        </div>
+
+                <div className="space-y-2">
+                  <label className="text-sm font-medium">Ano da Intervenção</label>
+                  <Select value={formData.nrAnoIntervencao} onValueChange={(value) => handleInputChange('nrAnoIntervencao', value)}>
+                    <SelectTrigger>
+                      <SelectValue placeholder="Selecione o ano" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {anosIntervencao.map((ano) => (
+                        <SelectItem key={ano} value={ano}>
+                          {ano}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
+
+                <div className="space-y-2">
+                  <label className="text-sm font-medium">Origem do Acompanhamento</label>
+                  <Select value={formData.idOrigemAcompanhamento} onValueChange={(value) => handleInputChange('idOrigemAcompanhamento', value)}>
+                    <SelectTrigger>
+                      <SelectValue placeholder="Selecione a origem" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {origensAcompanhamento.map((origem) => (
+                        <SelectItem key={origem.value} value={origem.value}>
+                          {origem.label}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
+
+                <div className="space-y-2">
+                  <label className="text-sm font-medium">Número do Acompanhamento</label>
+                  <Input
+                    type="number"
+                    value={formData.nrAcompanhamento}
+                    onChange={(e) => handleInputChange('nrAcompanhamento', e.target.value)}
+                    placeholder="Digite o número do acompanhamento"
+                  />
+                </div>
+
+                <div className="space-y-2">
+                  <label className="text-sm font-medium">Tipo do Ato do Contrato</label>
+                  <Select value={formData.idTipoAtoContrato} onValueChange={(value) => handleInputChange('idTipoAtoContrato', value)}>
+                    <SelectTrigger>
+                      <SelectValue placeholder="Selecione o tipo" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {tiposAtoContrato.map((tipo) => (
+                        <SelectItem key={tipo.value} value={tipo.value}>
+                          {tipo.label}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
+
+                <div className="space-y-2">
+                  <label className="text-sm font-medium">Tipo de Origem do Contrato</label>
+                  <Select value={formData.idTipoOrigemContrato} onValueChange={(value) => handleInputChange('idTipoOrigemContrato', value)}>
+                    <SelectTrigger>
+                      <SelectValue placeholder="Selecione o tipo de origem" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {tiposOrigemContrato.map((tipo) => (
+                        <SelectItem key={tipo.value} value={tipo.value}>
+                          {tipo.label}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
+
+                <div className="space-y-2">
+                  <label className="text-sm font-medium">Número do Contrato (máx. 9 números)</label>
+                  <Input
+                    type="number"
+                    value={formData.nrContrato}
+                    onChange={(e) => {
+                      const value = e.target.value;
+                      if (value.length <= 9) {
+                        handleInputChange('nrContrato', value);
+                      }
+                    }}
+                    placeholder="Digite o número do contrato"
+                    maxLength={9}
+                  />
+                </div>
+
+                <div className="space-y-2">
+                  <label className="text-sm font-medium">Ano do Contrato</label>
+                  <Select value={formData.nrAnoContrato} onValueChange={(value) => handleInputChange('nrAnoContrato', value)}>
+                    <SelectTrigger>
+                      <SelectValue placeholder="Selecione o ano" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {anosContrato.map((ano) => (
+                        <SelectItem key={ano} value={ano}>
+                          {ano}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
+
+                <div className="space-y-2">
+                  <label className="text-sm font-medium">CNPJ da Ent. de Origem do Contrato (máx. 15 números)</label>
+                  <Input
+                    type="number"
+                    value={formData.nrCNPJOrigem}
+                    onChange={(e) => {
+                      const value = e.target.value;
+                      if (value.length <= 15) {
+                        handleInputChange('nrCNPJOrigem', value);
+                      }
+                    }}
+                    placeholder="Digite o CNPJ"
+                    maxLength={15}
+                  />
+                </div>
+
+                <div className="space-y-2">
+                  <label className="text-sm font-medium">Número do Aditivo do Contrato (máx. 9 números)</label>
+                  <Input
+                    type="number"
+                    value={formData.nrAditivoContrato}
+                    onChange={(e) => {
+                      const value = e.target.value;
+                      if (value.length <= 9) {
+                        handleInputChange('nrAditivoContrato', value);
+                      }
+                    }}
+                    placeholder="Digite o número do aditivo"
+                    maxLength={9}
+                  />
+                </div>
+
+                <div className="space-y-2">
+                  <label className="text-sm font-medium">Ano do Aditivo</label>
+                  <Select value={formData.nrAnoAditivo} onValueChange={(value) => handleInputChange('nrAnoAditivo', value)}>
+                    <SelectTrigger>
+                      <SelectValue placeholder="Selecione o ano" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {anosAditivo.map((ano) => (
+                        <SelectItem key={ano} value={ano}>
+                          {ano}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
+              </div>
+
+              <div className="flex gap-4 justify-center pt-6">
+                <Button type="submit" className="px-8">
+                  Gerar Arquivo
+                </Button>
+                <Button type="button" variant="outline" onClick={handleClear} className="px-8">
+                  Limpar Campos
+                </Button>
+              </div>
+            </form>
+          </CardContent>
+        </Card>
       </div>
-    </Layout>
+    </div>
   );
 };
 
