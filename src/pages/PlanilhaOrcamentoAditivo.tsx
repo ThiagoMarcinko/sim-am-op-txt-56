@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -192,6 +191,29 @@ nrAnoAditivoContrato=${formData.nrAnoAditivoContrato}`;
     toast({
       title: "Arquivo Gerado",
       description: "O arquivo PlanilhaExecucaoIndiretaAditivo.txt foi baixado com sucesso.",
+    });
+  };
+
+  const handleClear = () => {
+    setFormData({
+      idPessoa: '',
+      cdIntervencao: '',
+      nrAnoIntervencao: '',
+      tipoDocumentoResponsavelOrcamento: '',
+      nrDocumentoResponsavelOrcamento: '',
+      cdControleLeiAto: '',
+      idTipoAtoContrato: '',
+      idTipoOrigemContrato: '',
+      nrContrato: '',
+      nrAnoContrato: '',
+      nrCNPJOrigem: '',
+      nrAditivoContrato: '',
+      nrAnoAditivoContrato: '',
+    });
+
+    toast({
+      title: "Formulário Limpo",
+      description: "Todos os campos foram limpos.",
     });
   };
 
@@ -418,10 +440,13 @@ nrAnoAditivoContrato=${formData.nrAnoAditivoContrato}`;
               </div>
             </div>
 
-            <div className="mt-8 flex justify-center">
+            <div className="mt-8 flex justify-center gap-4">
               <Button onClick={generateTxtFile} className="flex items-center gap-2">
                 <Download className="w-4 h-4" />
-                Gerar Arquivo TXT
+                Gerar Arquivo
+              </Button>
+              <Button onClick={handleClear} variant="outline" className="flex items-center gap-2">
+                Limpar Campos
               </Button>
             </div>
           </CardContent>
