@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -69,6 +70,10 @@ const PlanilhaOrcamentoContrato = () => {
   ];
 
   const anosContrato = Array.from({ length: 28 }, (_, i) => (2000 + i).toString());
+
+  const isFormValid = () => {
+    return Object.values(formData).every(value => value !== '');
+  };
 
   const handleInputChange = (field: keyof FormData, value: string) => {
     setFormData(prev => ({
@@ -377,7 +382,11 @@ const PlanilhaOrcamentoContrato = () => {
             </div>
 
             <div className="mt-8 flex justify-center gap-4">
-              <Button onClick={generateTxtFile} className="flex items-center gap-2">
+              <Button 
+                onClick={generateTxtFile} 
+                disabled={!isFormValid()}
+                className="flex items-center gap-2"
+              >
                 <Download className="w-4 h-4" />
                 Gerar Arquivo
               </Button>
