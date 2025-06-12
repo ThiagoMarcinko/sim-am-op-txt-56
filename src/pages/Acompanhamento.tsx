@@ -10,6 +10,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 interface FormData {
   idPessoa: string;
   cdIntervencao: string;
+  nrAnoIntervencao: string;
   idOrigemAcompanhamento: string;
   nrAcompanhamento: string;
   dtAcompanhamento: string;
@@ -23,6 +24,7 @@ const Acompanhamento = () => {
   const [formData, setFormData] = useState<FormData>({
     idPessoa: '',
     cdIntervencao: '',
+    nrAnoIntervencao: '',
     idOrigemAcompanhamento: '',
     nrAcompanhamento: '',
     dtAcompanhamento: '',
@@ -40,6 +42,7 @@ const Acompanhamento = () => {
     const txtContent = [
       formData.idPessoa,
       formData.cdIntervencao,
+      formData.nrAnoIntervencao,
       formData.idOrigemAcompanhamento,
       formData.nrAcompanhamento,
       formData.dtAcompanhamento,
@@ -102,7 +105,25 @@ const Acompanhamento = () => {
                 />
               </div>
 
-              {/* 3. Origem do Acompanhamento */}
+              {/* 3. Ano da Intervenção */}
+              <div className="space-y-2">
+                <Label htmlFor="nrAnoIntervencao">Ano da Intervenção</Label>
+                <Select value={formData.nrAnoIntervencao} onValueChange={(value) => updateFormData('nrAnoIntervencao', value)}>
+                  <SelectTrigger>
+                    <SelectValue placeholder="Selecione o ano" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="2023">2023</SelectItem>
+                    <SelectItem value="2024">2024</SelectItem>
+                    <SelectItem value="2025">2025</SelectItem>
+                    <SelectItem value="2026">2026</SelectItem>
+                    <SelectItem value="2027">2027</SelectItem>
+                    <SelectItem value="2028">2028</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+
+              {/* 4. Origem do Acompanhamento */}
               <div className="space-y-2">
                 <Label htmlFor="idOrigemAcompanhamento">Origem do Acompanhamento</Label>
                 <Select value={formData.idOrigemAcompanhamento} onValueChange={(value) => updateFormData('idOrigemAcompanhamento', value)}>
@@ -117,7 +138,7 @@ const Acompanhamento = () => {
                 </Select>
               </div>
 
-              {/* 4. Número do Acompanhamento */}
+              {/* 5. Número do Acompanhamento */}
               <div className="space-y-2">
                 <Label htmlFor="nrAcompanhamento">Número do Acompanhamento</Label>
                 <Input
@@ -129,7 +150,7 @@ const Acompanhamento = () => {
                 />
               </div>
 
-              {/* 5. Data do Acompanhamento */}
+              {/* 6. Data do Acompanhamento */}
               <div className="space-y-2">
                 <Label htmlFor="dtAcompanhamento">Data do Acompanhamento</Label>
                 <Input
@@ -140,7 +161,7 @@ const Acompanhamento = () => {
                 />
               </div>
 
-              {/* 6. Tipo do Acompanhamento */}
+              {/* 7. Tipo do Acompanhamento */}
               <div className="space-y-2">
                 <Label htmlFor="idTipoAcompanhamento">Tipo do Acompanhamento</Label>
                 <Select value={formData.idTipoAcompanhamento} onValueChange={(value) => updateFormData('idTipoAcompanhamento', value)}>
@@ -157,7 +178,7 @@ const Acompanhamento = () => {
                 </Select>
               </div>
 
-              {/* 7. Tipo de Documento Responsável Acompanhamento */}
+              {/* 8. Tipo de Documento Responsável Acompanhamento */}
               <div className="space-y-2">
                 <Label htmlFor="tpDocumentoResponsavelAcompanhamento">Tipo de Documento Responsável Acompanhamento</Label>
                 <Select value={formData.tpDocumentoResponsavelAcompanhamento} onValueChange={(value) => updateFormData('tpDocumentoResponsavelAcompanhamento', value)}>
@@ -179,7 +200,7 @@ const Acompanhamento = () => {
                 </Select>
               </div>
 
-              {/* 8. Número do Documento do Responsável Acompanhamento */}
+              {/* 9. Número do Documento do Responsável Acompanhamento */}
               <div className="space-y-2">
                 <Label htmlFor="nrDocumentoResponsavelAcompanhamento">Número do Documento do Responsável Acompanhamento</Label>
                 <Input
@@ -193,7 +214,7 @@ const Acompanhamento = () => {
               </div>
             </div>
 
-            {/* 9. Observações */}
+            {/* 10. Observações */}
             <div className="space-y-2">
               <Label htmlFor="dsObservacao">Observações</Label>
               <Textarea
