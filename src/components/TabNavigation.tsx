@@ -41,7 +41,7 @@ const TabNavigation = () => {
                     key={tab.value}
                     value={tab.value}
                     asChild
-                    className="text-xs whitespace-nowrap overflow-hidden text-ellipsis px-2"
+                    className="text-xs whitespace-nowrap overflow-hidden text-ellipsis px-2 bg-green-800 text-white border border-green-700 data-[state=active]:bg-green-200 data-[state=active]:text-gray-700 hover:bg-green-700"
                   >
                     <Link to={tab.value} className="w-full">
                       {tab.label}
