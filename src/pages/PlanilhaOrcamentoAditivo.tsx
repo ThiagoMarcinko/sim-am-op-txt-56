@@ -166,7 +166,7 @@ const PlanilhaOrcamentoAditivo = () => {
 
     const content = `${formData.idPessoa}|${formData.cdIntervencao}|${formData.nrAnoIntervencao}|${formData.tipoDocumentoResponsavelOrcamento}|${formData.nrDocumentoResponsavelOrcamento}|${formData.cdControleLeiAto}|${formData.idTipoAtoContrato}|${formData.idTipoOrigemContrato}|${formData.nrContrato}|${formData.nrAnoContrato}|${formData.nrCNPJOrigem}|${formData.nrAditivoContrato}|${formData.nrAnoAditivoContrato}|`;
 
-    const blob = new Blob([txtContent], { type: 'text/plain' });
+    const blob = new Blob([content], { type: 'text/plain' });
     const url = window.URL.createObjectURL(blob);
     const link = document.createElement('a');
     link.href = url;
