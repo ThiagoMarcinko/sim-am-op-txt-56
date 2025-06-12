@@ -9,7 +9,6 @@ import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover
 import { CalendarIcon } from 'lucide-react';
 import { format } from 'date-fns';
 import { cn } from '@/lib/utils';
-import { toast } from '@/components/ui/sonner';
 
 interface FormData {
   idPessoa: string;
@@ -59,7 +58,7 @@ const TabelaIntervencao = () => {
     });
   };
 
-  const generateTxtFile = async () => {
+  const generateTxtFile = () => {
     const regimeMap: { [key: string]: string } = {
       'Direto': '1',
       'Indireto': '2',
@@ -90,46 +89,15 @@ const TabelaIntervencao = () => {
       regimeMap[formData.idTipoRegimeIntervencao] || formData.idTipoRegimeIntervencao
     ].join('|') + '|';
 
-    try {
-      // Verifica se a API File System Access é suportada
-      if ('showSaveFilePicker' in window) {
-        const fileHandle = await (window as any).showSaveFilePicker({
-          suggestedName: 'Intervencao.txt',
-          types: [
-            {
-              description: 'Text files',
-              accept: {
-                'text/plain': ['.txt'],
-              },
-            },
-          ],
-        });
-
-        const writable = await fileHandle.createWritable();
-        await writable.write(txtContent);
-        await writable.close();
-        
-        toast.success('Arquivo salvo com sucesso!');
-      } else {
-        // Fallback para navegadores que não suportam a API
-        const blob = new Blob([txtContent], { type: 'text/plain' });
-        const url = URL.createObjectURL(blob);
-        const a = document.createElement('a');
-        a.href = url;
-        a.download = 'Intervencao.txt';
-        document.body.appendChild(a);
-        a.click();
-        document.body.removeChild(a);
-        URL.revokeObjectURL(url);
-        
-        toast.success('Arquivo baixado com sucesso!');
-      }
-    } catch (error) {
-      if ((error as Error).name !== 'AbortError') {
-        console.error('Erro ao salvar arquivo:', error);
-        toast.error('Erro ao salvar o arquivo. Tente novamente.');
-      }
-    }
+    const blob = new Blob([txtContent], { type: 'text/plain' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'Intervencao.txt';
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
   };
 
   const updateFormData = (field: keyof FormData, value: string | Date | undefined) => {
