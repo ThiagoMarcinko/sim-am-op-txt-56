@@ -33,7 +33,7 @@ const App = () => (
         <Routes>
           <Route path="/" element={<Index />} />
           <Route path="/tabela-intervencao" element={<Layout><TabelaIntervencao /></Layout>} />
-          <Route path="/intervencao-bem" element={<IntervencaoBem />} />
+          <Route path="/intervencao-bem" element={<Layout><IntervencaoBem /></Layout>} />
           <Route path="/responsabilidade-tecnica" element={<Layout><ResponsabilidadeTecnica /></Layout>} />
           <Route path="/planilha-orcamento" element={<Layout><PlanilhaOrcamento /></Layout>} />
           <Route path="/planilha-orcamento-contrato" element={<Layout><PlanilhaOrcamentoContrato /></Layout>} />
@@ -41,10 +41,10 @@ const App = () => (
           <Route path="/acompanhamento" element={<Layout><Acompanhamento /></Layout>} />
           <Route path="/medicao" element={<Layout><Medicao /></Layout>} />
           <Route path="/execucao-indireta-contrato" element={<Layout><ExecucaoIndiretaContrato /></Layout>} />
-          <Route path="/execucao-indireta-aditivo" element={<ExecucaoIndiretaAditivo />} />
+          <Route path="/execucao-indireta-aditivo" element={<Layout><ExecucaoIndiretaAditivo /></Layout>} />
           <Route path="/paralisacao" element={<Layout><Paralisacao /></Layout>} />
-          <Route path="/documentos-acompanhamento" element={<DocumentosAcompanhamento />} />
-          <Route path="/intervencao-acao-planejamento" element={<IntervencaoAcaoPlanejamento />} />
+          <Route path="/documentos-acompanhamento" element={<Layout><DocumentosAcompanhamento /></Layout>} />
+          <Route path="/intervencao-acao-planejamento" element={<Layout><IntervencaoAcaoPlanejamento /></Layout>} />
           <Route path="/empenho-intervencao" element={<Layout><EmpenhoIntervencao /></Layout>} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />

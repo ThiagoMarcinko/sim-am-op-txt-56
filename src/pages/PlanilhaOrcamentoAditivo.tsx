@@ -1,14 +1,12 @@
-
 import React, { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { useToast } from '@/hooks/use-toast';
-import { Download } from 'lucide-react';
+import { toast } from '@/hooks/use-toast';
 
-interface FormData {
+interface FormDataAditivoContrato {
   idPessoa: string;
   cdIntervencao: string;
   nrAnoIntervencao: string;
@@ -25,8 +23,7 @@ interface FormData {
 }
 
 const PlanilhaOrcamentoAditivo = () => {
-  const { toast } = useToast();
-  const [formData, setFormData] = useState<FormData>({
+  const [formData, setFormData] = useState<FormDataAditivoContrato>({
     idPessoa: '',
     cdIntervencao: '',
     nrAnoIntervencao: '',
@@ -42,41 +39,7 @@ const PlanilhaOrcamentoAditivo = () => {
     nrAnoAditivoContrato: '',
   });
 
-  const entidades = [
-    { label: 'Mangueirinha', value: '12377' },
-    { label: 'Bandeirantes', value: '12203' }
-  ];
-
-  const anosIntervencao = ['2023', '2024', '2025', '2026', '2027', '2028'];
-
-  const tiposDocumento = [
-    { label: 'RG', value: '1' },
-    { label: 'CPF', value: '2' },
-    { label: 'CNPJ', value: '3' },
-    { label: 'OAB', value: '4' },
-    { label: 'CREA', value: '5' },
-    { label: 'CAU', value: '6' },
-    { label: 'CTF', value: '7' },
-    { label: 'CFTA', value: '8' },
-    { label: 'CONTR', value: '97' },
-    { label: 'EST', value: '98' }
-  ];
-
-  const tiposAtoContrato = [
-    { label: 'Contrato', value: '1' },
-    { label: 'Ata de Registro de Preços', value: '2' }
-  ];
-
-  const tiposOrigemContrato = [
-    { label: 'Própria Entidade', value: '1' },
-    { label: 'Contratado/Entidade Pública de Outro Estado', value: '2' },
-    { label: 'Outra Entidade pública', value: '3' }
-  ];
-
-  const anosContrato = Array.from({ length: 28 }, (_, i) => (2000 + i).toString());
-  const anosAditivo = Array.from({ length: 28 }, (_, i) => (2000 + i).toString());
-
-  const handleInputChange = (field: keyof FormData, value: string) => {
+  const updateFormData = (field: keyof FormDataAditivoContrato, value: string) => {
     setFormData(prev => ({
       ...prev,
       [field]: value
@@ -84,127 +47,19 @@ const PlanilhaOrcamentoAditivo = () => {
   };
 
   const validateForm = (): boolean => {
-    const requiredFields = [
-      'idPessoa',
-      'cdIntervencao',
-      'nrAnoIntervencao',
-      'tipoDocumentoResponsavelOrcamento',
-      'nrDocumentoResponsavelOrcamento',
-      'cdControleLeiAto',
-      'idTipoAtoContrato',
-      'idTipoOrigemContrato',
-      'nrContrato',
-      'nrAnoContrato',
-      'nrCNPJOrigem',
-      'nrAditivoContrato',
-      'nrAnoAditivoContrato'
-    ];
-
-    for (const field of requiredFields) {
-      if (!formData[field as keyof FormData]) {
+    for (const [key, value] of Object.entries(formData)) {
+      if (value.trim() === '') {
         toast({
-          title: "Erro de Validação",
-          description: `O campo ${field} é obrigatório.`,
-          variant: "destructive",
+          title: "Validação",
+          description: `O campo ${key} é obrigatório.`,
         });
         return false;
       }
     }
-
-    // Validações específicas
-    if (formData.nrDocumentoResponsavelOrcamento.length > 15) {
-      toast({
-        title: "Erro de Validação",
-        description: "Número do Documento do Responsável deve ter no máximo 15 caracteres.",
-        variant: "destructive",
-      });
-      return false;
-    }
-
-    if (formData.cdControleLeiAto.length > 7) {
-      toast({
-        title: "Erro de Validação",
-        description: "Código Controle Lei Ato deve ter no máximo 7 números.",
-        variant: "destructive",
-      });
-      return false;
-    }
-
-    if (formData.nrContrato.length > 9) {
-      toast({
-        title: "Erro de Validação",
-        description: "Número do Contrato deve ter no máximo 9 números.",
-        variant: "destructive",
-      });
-      return false;
-    }
-
-    if (formData.nrCNPJOrigem.length > 15) {
-      toast({
-        title: "Erro de Validação",
-        description: "CNPJ da Entidade de Origem deve ter no máximo 15 números.",
-        variant: "destructive",
-      });
-      return false;
-    }
-
-    if (formData.nrAditivoContrato.length > 9) {
-      toast({
-        title: "Erro de Validação",
-        description: "Número do Aditivo deve ter no máximo 9 números.",
-        variant: "destructive",
-      });
-      return false;
-    }
-
     return true;
   };
 
-  const generateTxtFile = () => {
-    console.log('=== DEBUG: generateTxtFile called ===');
-    
-    if (!validateForm()) {
-      console.log('DEBUG: Validation failed');
-      return;
-    }
-
-    console.log('DEBUG: FormData:', formData);
-
-    const content = `${formData.idPessoa}|${formData.cdIntervencao}|${formData.nrAnoIntervencao}|${formData.tipoDocumentoResponsavelOrcamento}|${formData.nrDocumentoResponsavelOrcamento}|${formData.cdControleLeiAto}|${formData.idTipoAtoContrato}|${formData.idTipoOrigemContrato}|${formData.nrContrato}|${formData.nrAnoContrato}|${formData.nrCNPJOrigem}|${formData.nrAditivoContrato}|${formData.nrAnoAditivoContrato}|`;
-
-    console.log('DEBUG: Content to be written:', content);
-    console.log('DEBUG: Content length:', content.length);
-    console.log('DEBUG: Content as array:', content.split(''));
-
-    const blob = new Blob([content], { type: 'text/plain;charset=utf-8' });
-    console.log('DEBUG: Blob created:', blob);
-    console.log('DEBUG: Blob size:', blob.size);
-    console.log('DEBUG: Blob type:', blob.type);
-
-    const url = window.URL.createObjectURL(blob);
-    const link = document.createElement('a');
-    link.href = url;
-    link.download = 'PlanilhaExecucaoIndiretaAditivo.txt';
-    link.style.display = 'none';
-    document.body.appendChild(link);
-    
-    console.log('DEBUG: About to click download link');
-    link.click();
-    
-    // Cleanup
-    setTimeout(() => {
-      document.body.removeChild(link);
-      window.URL.revokeObjectURL(url);
-      console.log('DEBUG: Cleanup completed');
-    }, 100);
-
-    toast({
-      title: "Arquivo Gerado",
-      description: "O arquivo PlanilhaExecucaoIndiretaAditivo.txt foi baixado com sucesso.",
-    });
-  };
-
-  const handleClear = () => {
+  const clearForm = () => {
     setFormData({
       idPessoa: '',
       cdIntervencao: '',
@@ -227,30 +82,56 @@ const PlanilhaOrcamentoAditivo = () => {
     });
   };
 
+  const generateTxtFile = () => {
+    if (!validateForm()) {
+      return;
+    }
+
+    const content = `${formData.idPessoa}|${formData.cdIntervencao}|${formData.nrAnoIntervencao}|${formData.tipoDocumentoResponsavelOrcamento}|${formData.nrDocumentoResponsavelOrcamento}|${formData.cdControleLeiAto}|${formData.idTipoAtoContrato}|${formData.idTipoOrigemContrato}|${formData.nrContrato}|${formData.nrAnoContrato}|${formData.nrCNPJOrigem}|${formData.nrAditivoContrato}|${formData.nrAnoAditivoContrato}|`;
+
+    try {
+      const blob = new Blob([content], { type: 'text/plain' });
+      const url = window.URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = 'PlanilhaOrcamentoAditivo.txt';
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      window.URL.revokeObjectURL(url);
+
+      toast({
+        title: "Arquivo Gerado",
+        description: "O arquivo PlanilhaOrcamentoAditivo.txt foi gerado com sucesso!",
+      });
+    } catch (error) {
+      toast({
+        title: "Erro",
+        description: "Ocorreu um erro ao gerar o arquivo.",
+        variant: "destructive"
+      });
+    }
+  };
+
   return (
-    <div className="min-h-screen bg-background p-6">
+    <div className="p-6">
       <div className="max-w-4xl mx-auto">
         <Card>
           <CardHeader>
-            <CardTitle className="text-3xl font-bold text-center">
-              Planilha Orçamento de Aditivo de Contrato
-            </CardTitle>
+            <CardTitle className="text-3xl font-bold text-center">Planilha Orçamento de Aditivo de Contrato</CardTitle>
           </CardHeader>
-          <CardContent>
+          <CardContent className="space-y-6">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               {/* Identificação da Entidade */}
               <div className="space-y-2">
                 <Label htmlFor="idPessoa">Identificação da Entidade</Label>
-                <Select value={formData.idPessoa} onValueChange={(value) => handleInputChange('idPessoa', value)}>
+                <Select value={formData.idPessoa} onValueChange={value => updateFormData('idPessoa', value)}>
                   <SelectTrigger>
                     <SelectValue placeholder="Selecione a entidade" />
                   </SelectTrigger>
                   <SelectContent>
-                    {entidades.map((entidade) => (
-                      <SelectItem key={entidade.value} value={entidade.value}>
-                        {entidade.label}
-                      </SelectItem>
-                    ))}
+                    <SelectItem value="12377">Mangueirinha</SelectItem>
+                    <SelectItem value="12203">Bandeirantes</SelectItem>
                   </SelectContent>
                 </Select>
               </div>
@@ -260,26 +141,27 @@ const PlanilhaOrcamentoAditivo = () => {
                 <Label htmlFor="cdIntervencao">Código da Intervenção</Label>
                 <Input
                   id="cdIntervencao"
-                  type="number"
+                  type="text"
                   value={formData.cdIntervencao}
-                  onChange={(e) => handleInputChange('cdIntervencao', e.target.value)}
-                  placeholder="Digite o código da intervenção"
+                  onChange={e => updateFormData('cdIntervencao', e.target.value)}
+                  placeholder="Digite o código"
                 />
               </div>
 
               {/* Ano da Intervenção */}
               <div className="space-y-2">
                 <Label htmlFor="nrAnoIntervencao">Ano da Intervenção</Label>
-                <Select value={formData.nrAnoIntervencao} onValueChange={(value) => handleInputChange('nrAnoIntervencao', value)}>
+                <Select value={formData.nrAnoIntervencao} onValueChange={value => updateFormData('nrAnoIntervencao', value)}>
                   <SelectTrigger>
                     <SelectValue placeholder="Selecione o ano" />
                   </SelectTrigger>
                   <SelectContent>
-                    {anosIntervencao.map((ano) => (
-                      <SelectItem key={ano} value={ano}>
-                        {ano}
-                      </SelectItem>
-                    ))}
+                    <SelectItem value="2023">2023</SelectItem>
+                    <SelectItem value="2024">2024</SelectItem>
+                    <SelectItem value="2025">2025</SelectItem>
+                    <SelectItem value="2026">2026</SelectItem>
+                    <SelectItem value="2027">2027</SelectItem>
+                    <SelectItem value="2028">2028</SelectItem>
                   </SelectContent>
                 </Select>
               </div>
@@ -287,16 +169,21 @@ const PlanilhaOrcamentoAditivo = () => {
               {/* Tipo de Documento Responsável Orçamento */}
               <div className="space-y-2">
                 <Label htmlFor="tipoDocumentoResponsavelOrcamento">Tipo de Documento Responsável Orçamento</Label>
-                <Select value={formData.tipoDocumentoResponsavelOrcamento} onValueChange={(value) => handleInputChange('tipoDocumentoResponsavelOrcamento', value)}>
+                <Select value={formData.tipoDocumentoResponsavelOrcamento} onValueChange={value => updateFormData('tipoDocumentoResponsavelOrcamento', value)}>
                   <SelectTrigger>
-                    <SelectValue placeholder="Selecione o tipo de documento" />
+                    <SelectValue placeholder="Selecione o tipo" />
                   </SelectTrigger>
                   <SelectContent>
-                    {tiposDocumento.map((tipo) => (
-                      <SelectItem key={tipo.value} value={tipo.value}>
-                        {tipo.label}
-                      </SelectItem>
-                    ))}
+                    <SelectItem value="1">RG</SelectItem>
+                    <SelectItem value="2">CPF</SelectItem>
+                    <SelectItem value="3">CNPJ</SelectItem>
+                    <SelectItem value="4">OAB</SelectItem>
+                    <SelectItem value="5">CREA</SelectItem>
+                    <SelectItem value="6">CAU</SelectItem>
+                    <SelectItem value="7">CTF</SelectItem>
+                    <SelectItem value="8">CFTA</SelectItem>
+                    <SelectItem value="97">CONTR</SelectItem>
+                    <SelectItem value="98">EST</SelectItem>
                   </SelectContent>
                 </Select>
               </div>
@@ -306,10 +193,11 @@ const PlanilhaOrcamentoAditivo = () => {
                 <Label htmlFor="nrDocumentoResponsavelOrcamento">Número do Documento do Responsável Orçamento</Label>
                 <Input
                   id="nrDocumentoResponsavelOrcamento"
-                  value={formData.nrDocumentoResponsavelOrcamento}
-                  onChange={(e) => handleInputChange('nrDocumentoResponsavelOrcamento', e.target.value)}
-                  placeholder="Digite o número do documento (máx. 15 caracteres)"
+                  type="text"
                   maxLength={15}
+                  value={formData.nrDocumentoResponsavelOrcamento}
+                  onChange={e => updateFormData('nrDocumentoResponsavelOrcamento', e.target.value)}
+                  placeholder="Digite o número do documento"
                 />
               </div>
 
@@ -318,48 +206,45 @@ const PlanilhaOrcamentoAditivo = () => {
                 <Label htmlFor="cdControleLeiAto">Código Controle Lei Ato</Label>
                 <Input
                   id="cdControleLeiAto"
-                  type="number"
+                  type="text"
                   value={formData.cdControleLeiAto}
-                  onChange={(e) => {
+                  onChange={e => {
                     const value = e.target.value;
                     if (value.length <= 7) {
-                      handleInputChange('cdControleLeiAto', value);
+                      updateFormData('cdControleLeiAto', value);
                     }
                   }}
-                  placeholder="Digite o código (máx. 7 números)"
+                  placeholder="Máximo 7 números"
                 />
               </div>
 
-              {/* Tipo do Ato do Contrato */}
+              {/* Tipo de Ato */}
               <div className="space-y-2">
-                <Label htmlFor="idTipoAtoContrato">Tipo do Ato do Contrato</Label>
-                <Select value={formData.idTipoAtoContrato} onValueChange={(value) => handleInputChange('idTipoAtoContrato', value)}>
+                <Label htmlFor="idTipoAtoContrato">Tipo de Ato</Label>
+                <Select value={formData.idTipoAtoContrato} onValueChange={value => updateFormData('idTipoAtoContrato', value)}>
                   <SelectTrigger>
-                    <SelectValue placeholder="Selecione o tipo de ato" />
+                    <SelectValue placeholder="Selecione o tipo" />
                   </SelectTrigger>
                   <SelectContent>
-                    {tiposAtoContrato.map((tipo) => (
-                      <SelectItem key={tipo.value} value={tipo.value}>
-                        {tipo.label}
-                      </SelectItem>
-                    ))}
+                    <SelectItem value="1">Contrato</SelectItem>
+                    <SelectItem value="2">ARP</SelectItem>
                   </SelectContent>
                 </Select>
               </div>
 
-              {/* Tipo de Origem do Contrato */}
+              {/* Tipo de Origem */}
               <div className="space-y-2">
-                <Label htmlFor="idTipoOrigemContrato">Tipo de Origem do Contrato</Label>
-                <Select value={formData.idTipoOrigemContrato} onValueChange={(value) => handleInputChange('idTipoOrigemContrato', value)}>
+                <Label htmlFor="idTipoOrigemContrato">Tipo de Origem</Label>
+                <Select value={formData.idTipoOrigemContrato} onValueChange={value => updateFormData('idTipoOrigemContrato', value)}>
                   <SelectTrigger>
                     <SelectValue placeholder="Selecione o tipo de origem" />
                   </SelectTrigger>
                   <SelectContent>
-                    {tiposOrigemContrato.map((tipo) => (
-                      <SelectItem key={tipo.value} value={tipo.value}>
-                        {tipo.label}
-                      </SelectItem>
-                    ))}
+                    <SelectItem value="1">Licitação</SelectItem>
+                    <SelectItem value="2">Dispensa</SelectItem>
+                    <SelectItem value="3">Inexigibilidade</SelectItem>
+                    <SelectItem value="4">Convênio/Congênere</SelectItem>
+                    <SelectItem value="5">Outro</SelectItem>
                   </SelectContent>
                 </Select>
               </div>
@@ -369,93 +254,83 @@ const PlanilhaOrcamentoAditivo = () => {
                 <Label htmlFor="nrContrato">Número do Contrato</Label>
                 <Input
                   id="nrContrato"
-                  type="number"
+                  type="text"
                   value={formData.nrContrato}
-                  onChange={(e) => {
-                    const value = e.target.value;
-                    if (value.length <= 9) {
-                      handleInputChange('nrContrato', value);
-                    }
-                  }}
-                  placeholder="Digite o número do contrato (máx. 9 números)"
+                  onChange={e => updateFormData('nrContrato', e.target.value)}
+                  placeholder="Digite o número do contrato"
                 />
               </div>
 
               {/* Ano do Contrato */}
               <div className="space-y-2">
                 <Label htmlFor="nrAnoContrato">Ano do Contrato</Label>
-                <Select value={formData.nrAnoContrato} onValueChange={(value) => handleInputChange('nrAnoContrato', value)}>
+                <Select value={formData.nrAnoContrato} onValueChange={value => updateFormData('nrAnoContrato', value)}>
                   <SelectTrigger>
                     <SelectValue placeholder="Selecione o ano" />
                   </SelectTrigger>
                   <SelectContent>
-                    {anosContrato.map((ano) => (
-                      <SelectItem key={ano} value={ano}>
-                        {ano}
-                      </SelectItem>
-                    ))}
+                    <SelectItem value="2020">2020</SelectItem>
+                    <SelectItem value="2021">2021</SelectItem>
+                    <SelectItem value="2022">2022</SelectItem>
+                    <SelectItem value="2023">2023</SelectItem>
+                    <SelectItem value="2024">2024</SelectItem>
+                    <SelectItem value="2025">2025</SelectItem>
                   </SelectContent>
                 </Select>
               </div>
 
-              {/* CNPJ da Ent. de Origem do Contrato */}
+              {/* Número CNPJ de Origem */}
               <div className="space-y-2">
-                <Label htmlFor="nrCNPJOrigem">CNPJ da Ent. de Origem do Contrato</Label>
+                <Label htmlFor="nrCNPJOrigem">Número CNPJ de Origem</Label>
                 <Input
                   id="nrCNPJOrigem"
-                  type="number"
+                  type="text"
                   value={formData.nrCNPJOrigem}
-                  onChange={(e) => {
-                    const value = e.target.value;
-                    if (value.length <= 15) {
-                      handleInputChange('nrCNPJOrigem', value);
-                    }
-                  }}
-                  placeholder="Digite o CNPJ (máx. 15 números)"
+                  onChange={e => updateFormData('nrCNPJOrigem', e.target.value)}
+                  placeholder="Digite o CNPJ de origem"
                 />
               </div>
 
-              {/* Número do Aditivo */}
+              {/* Número do Aditivo do Contrato */}
               <div className="space-y-2">
-                <Label htmlFor="nrAditivoContrato">Número do Aditivo</Label>
+                <Label htmlFor="nrAditivoContrato">Número do Aditivo do Contrato</Label>
                 <Input
                   id="nrAditivoContrato"
-                  type="number"
+                  type="text"
                   value={formData.nrAditivoContrato}
-                  onChange={(e) => {
-                    const value = e.target.value;
-                    if (value.length <= 9) {
-                      handleInputChange('nrAditivoContrato', value);
-                    }
-                  }}
-                  placeholder="Digite o número do aditivo (máx. 9 números)"
+                  onChange={e => updateFormData('nrAditivoContrato', e.target.value)}
+                  placeholder="Digite o número do aditivo"
                 />
               </div>
 
-              {/* Ano do Aditivo */}
+              {/* Ano do Aditivo do Contrato */}
               <div className="space-y-2">
-                <Label htmlFor="nrAnoAditivoContrato">Ano do Aditivo</Label>
-                <Select value={formData.nrAnoAditivoContrato} onValueChange={(value) => handleInputChange('nrAnoAditivoContrato', value)}>
+                <Label htmlFor="nrAnoAditivoContrato">Ano do Aditivo do Contrato</Label>
+                <Select value={formData.nrAnoAditivoContrato} onValueChange={value => updateFormData('nrAnoAditivoContrato', value)}>
                   <SelectTrigger>
                     <SelectValue placeholder="Selecione o ano" />
                   </SelectTrigger>
                   <SelectContent>
-                    {anosAditivo.map((ano) => (
-                      <SelectItem key={ano} value={ano}>
-                        {ano}
-                      </SelectItem>
-                    ))}
+                    <SelectItem value="2020">2020</SelectItem>
+                    <SelectItem value="2021">2021</SelectItem>
+                    <SelectItem value="2022">2022</SelectItem>
+                    <SelectItem value="2023">2023</SelectItem>
+                    <SelectItem value="2024">2024</SelectItem>
+                    <SelectItem value="2025">2025</SelectItem>
                   </SelectContent>
                 </Select>
               </div>
             </div>
 
-            <div className="mt-8 flex justify-center gap-4">
-              <Button onClick={generateTxtFile} className="flex items-center gap-2">
-                <Download className="w-4 h-4" />
+            <div className="flex gap-4 justify-center pt-6">
+              <Button
+                onClick={generateTxtFile}
+                disabled={!Object.values(formData).every(value => value !== '')}
+                className="px-8"
+              >
                 Gerar Arquivo
               </Button>
-              <Button onClick={handleClear} variant="outline" className="flex items-center gap-2">
+              <Button type="button" variant="outline" onClick={clearForm} className="px-8">
                 Limpar Campos
               </Button>
             </div>
