@@ -202,7 +202,7 @@ const Acompanhamento = () => {
 
               {/* 9. Número do Documento do Responsável Acompanhamento */}
               <div className="space-y-2">
-                <Label htmlFor="nrDocumentoResponsavelAcompanhamento">Número do Documento do Responsável Acompanhamento</Label>
+                <Label htmlFor="nrDocumentoResponsavelAcompanhamento">Nº do Doc. do Responsável Acompanhamento</Label>
                 <Input
                   id="nrDocumentoResponsavelAcompanhamento"
                   type="text"
