@@ -1,21 +1,24 @@
 
 import React from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import Layout from '@/components/Layout';
 
 const ExecucaoIndiretaAditivo = () => {
   return (
-    <div className="min-h-screen bg-background p-6">
-      <div className="max-w-4xl mx-auto">
-        <Card>
-          <CardHeader>
-            <CardTitle className="text-3xl font-bold text-center">Execução Indireta Aditivo</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <p className="text-center text-muted-foreground">Esta página está em desenvolvimento.</p>
-          </CardContent>
-        </Card>
+    <Layout>
+      <div className="p-6">
+        <div className="max-w-4xl mx-auto">
+          <Card>
+            <CardHeader>
+              <CardTitle className="text-3xl font-bold text-center">Execução Indireta Aditivo</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <p className="text-center text-muted-foreground">Esta página está em desenvolvimento.</p>
+            </CardContent>
+          </Card>
+        </div>
       </div>
-    </div>
+    </Layout>
   );
 };
 
