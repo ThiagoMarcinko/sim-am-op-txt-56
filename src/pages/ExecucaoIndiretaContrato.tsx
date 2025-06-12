@@ -59,6 +59,10 @@ const ExecucaoIndiretaContrato = () => {
 
   const anosContrato = Array.from({ length: 28 }, (_, i) => (2000 + i).toString());
 
+  const isFormValid = () => {
+    return Object.values(formData).every(value => value !== '');
+  };
+
   const handleInputChange = (field: keyof FormData, value: string) => {
     setFormData(prev => ({
       ...prev,
@@ -365,7 +369,11 @@ const ExecucaoIndiretaContrato = () => {
               </div>
 
               <div className="flex gap-4 justify-center pt-6">
-                <Button type="submit" className="px-8">
+                <Button 
+                  type="submit" 
+                  disabled={!isFormValid()}
+                  className="px-8"
+                >
                   Gerar Arquivo
                 </Button>
                 <Button type="button" variant="outline" onClick={handleClear} className="px-8">
