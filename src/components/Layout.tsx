@@ -1,6 +1,7 @@
 
 import React from 'react';
-import TabNavigation from './TabNavigation';
+import { SidebarProvider, SidebarTrigger } from '@/components/ui/sidebar';
+import AppSidebar from './AppSidebar';
 import FloatingBackButton from './FloatingBackButton';
 
 interface LayoutProps {
@@ -9,11 +10,18 @@ interface LayoutProps {
 
 const Layout = ({ children }: LayoutProps) => {
   return (
-    <div className="min-h-screen bg-background">
-      <TabNavigation />
-      {children}
-      <FloatingBackButton />
-    </div>
+    <SidebarProvider>
+      <div className="min-h-screen flex w-full bg-background">
+        <AppSidebar />
+        <main className="flex-1 p-4">
+          <div className="mb-4">
+            <SidebarTrigger />
+          </div>
+          {children}
+        </main>
+        <FloatingBackButton />
+      </div>
+    </SidebarProvider>
   );
 };
 
