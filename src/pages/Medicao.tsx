@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -158,6 +159,16 @@ const Medicao = () => {
     }));
   };
 
+  const handleCdIntervencaoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value.replace(/[^0-9]/g, '');
+    updateFormData('cdIntervencao', value);
+  };
+
+  const handleNrAcompanhamentoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value.replace(/[^0-9]/g, '');
+    updateFormData('nrAcompanhamento', value);
+  };
+
   const handlePercentualChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
     const numericValue = parseFloat(value);
@@ -194,9 +205,10 @@ const Medicao = () => {
                   <Label htmlFor="cdIntervencao">Código da Intervenção</Label>
                   <Input
                     id="cdIntervencao"
-                    type="number"
+                    type="text"
+                    inputMode="numeric"
                     value={formData.cdIntervencao}
-                    onChange={(e) => updateFormData('cdIntervencao', e.target.value)}
+                    onChange={handleCdIntervencaoChange}
                     placeholder="Digite o código"
                   />
                 </div>
@@ -236,9 +248,10 @@ const Medicao = () => {
                   <Label htmlFor="nrAcompanhamento">Número do Acompanhamento</Label>
                   <Input
                     id="nrAcompanhamento"
-                    type="number"
+                    type="text"
+                    inputMode="numeric"
                     value={formData.nrAcompanhamento}
-                    onChange={(e) => updateFormData('nrAcompanhamento', e.target.value)}
+                    onChange={handleNrAcompanhamentoChange}
                     placeholder="Digite o número"
                   />
                 </div>
@@ -261,10 +274,8 @@ const Medicao = () => {
                   <Label htmlFor="nrPercentualFisicoMedicao">Percentual Físico da Medição (%)</Label>
                   <Input
                     id="nrPercentualFisicoMedicao"
-                    type="number"
-                    step="0.01"
-                    min="0"
-                    max="100"
+                    type="text"
+                    inputMode="decimal"
                     value={formData.nrPercentualFisicoMedicao}
                     onChange={handlePercentualChange}
                     placeholder="0.00 - 100.00"

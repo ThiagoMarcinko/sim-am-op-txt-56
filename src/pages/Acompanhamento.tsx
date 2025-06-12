@@ -185,6 +185,16 @@ const Acompanhamento = () => {
     }));
   };
 
+  const handleCdIntervencaoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value.replace(/[^0-9]/g, '');
+    updateFormData('cdIntervencao', value);
+  };
+
+  const handleNrAcompanhamentoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value.replace(/[^0-9]/g, '');
+    updateFormData('nrAcompanhamento', value);
+  };
+
   return (
     <div className="min-h-screen bg-background p-6">
       <div className="max-w-4xl mx-auto">
@@ -212,9 +222,10 @@ const Acompanhamento = () => {
                   <Label htmlFor="cdIntervencao">Código da Intervenção</Label>
                   <Input
                     id="cdIntervencao"
-                    type="number"
+                    type="text"
+                    inputMode="numeric"
                     value={formData.cdIntervencao}
-                    onChange={(e) => updateFormData('cdIntervencao', e.target.value)}
+                    onChange={handleCdIntervencaoChange}
                     placeholder="Digite o código"
                   />
                 </div>
@@ -254,9 +265,10 @@ const Acompanhamento = () => {
                   <Label htmlFor="nrAcompanhamento">Número do Acompanhamento</Label>
                   <Input
                     id="nrAcompanhamento"
-                    type="number"
+                    type="text"
+                    inputMode="numeric"
                     value={formData.nrAcompanhamento}
-                    onChange={(e) => updateFormData('nrAcompanhamento', e.target.value)}
+                    onChange={handleNrAcompanhamentoChange}
                     placeholder="Digite o número"
                   />
                 </div>

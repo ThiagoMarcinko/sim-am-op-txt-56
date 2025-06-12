@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -150,6 +151,11 @@ const EmpenhoIntervencao = () => {
     }
   };
 
+  const handleCdIntervencaoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value.replace(/[^0-9]/g, '');
+    updateFormData('cdIntervencao', value);
+  };
+
   return (
     <div className="min-h-screen bg-background p-6">
       <div className="max-w-4xl mx-auto">
@@ -178,6 +184,7 @@ const EmpenhoIntervencao = () => {
                   <Input
                     id="nrEmpenho"
                     type="text"
+                    inputMode="numeric"
                     maxLength={15}
                     value={formData.nrEmpenho}
                     onChange={handleNrEmpenhoChange}
@@ -207,6 +214,7 @@ const EmpenhoIntervencao = () => {
                   <Input
                     id="idOrigemEmpenho"
                     type="text"
+                    inputMode="numeric"
                     maxLength={7}
                     value={formData.idOrigemEmpenho}
                     onChange={handleOrigemEmpenhoChange}
@@ -218,9 +226,10 @@ const EmpenhoIntervencao = () => {
                   <Label htmlFor="cdIntervencao">Código da Intervenção</Label>
                   <Input
                     id="cdIntervencao"
-                    type="number"
+                    type="text"
+                    inputMode="numeric"
                     value={formData.cdIntervencao}
-                    onChange={(e) => updateFormData('cdIntervencao', e.target.value)}
+                    onChange={handleCdIntervencaoChange}
                     placeholder="Digite o código"
                   />
                 </div>

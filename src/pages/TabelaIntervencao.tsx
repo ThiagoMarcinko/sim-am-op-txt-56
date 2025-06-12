@@ -140,6 +140,32 @@ const TabelaIntervencao = () => {
     }));
   };
 
+  const handleCdIntervencaoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value.replace(/[^0-9]/g, '');
+    updateFormData('cdIntervencao', value);
+  };
+
+  const handleNrMedidaChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    // Allow numbers and decimal point
+    if (value === '' || /^\d*\.?\d*$/.test(value)) {
+      updateFormData('nrMedida', value);
+    }
+  };
+
+  const handleVlIntervencaoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    // Allow numbers and decimal point
+    if (value === '' || /^\d*\.?\d*$/.test(value)) {
+      updateFormData('vlIntervencao', value);
+    }
+  };
+
+  const handleNrPrazoExecucaoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value.replace(/[^0-9]/g, '');
+    updateFormData('nrPrazoExecucao', value);
+  };
+
   return (
     <div className="p-6">
       <div className="max-w-6xl mx-auto">
@@ -168,9 +194,10 @@ const TabelaIntervencao = () => {
                 <Label htmlFor="cdIntervencao">Código da Intervenção</Label>
                 <Input
                   id="cdIntervencao"
-                  type="number"
+                  type="text"
+                  inputMode="numeric"
                   value={formData.cdIntervencao}
-                  onChange={(e) => updateFormData('cdIntervencao', e.target.value)}
+                  onChange={handleCdIntervencaoChange}
                   placeholder="Digite o código"
                 />
               </div>
@@ -307,9 +334,11 @@ const TabelaIntervencao = () => {
                 <Label htmlFor="nrMedida">Medida</Label>
                 <Input
                   id="nrMedida"
+                  type="text"
+                  inputMode="decimal"
                   value={formData.nrMedida}
-                  onChange={(e) => updateFormData('nrMedida', e.target.value)}
-                  placeholder="000,00"
+                  onChange={handleNrMedidaChange}
+                  placeholder="Digite a medida"
                 />
               </div>
 
@@ -337,9 +366,11 @@ const TabelaIntervencao = () => {
                 <Label htmlFor="vlIntervencao">Valor da Intervenção</Label>
                 <Input
                   id="vlIntervencao"
+                  type="text"
+                  inputMode="decimal"
                   value={formData.vlIntervencao}
-                  onChange={(e) => updateFormData('vlIntervencao', e.target.value)}
-                  placeholder="000.000,00"
+                  onChange={handleVlIntervencaoChange}
+                  placeholder="Digite o valor"
                 />
               </div>
 
@@ -375,14 +406,15 @@ const TabelaIntervencao = () => {
                 </Popover>
               </div>
 
-              {/* 14. Prazo de Execução */}
+              {/* 14. Prazo de Execução (dias) */}
               <div className="space-y-2">
-                <Label htmlFor="nrPrazoExecucao">Prazo de Execução</Label>
+                <Label htmlFor="nrPrazoExecucao">Prazo de Execução (dias)</Label>
                 <Input
                   id="nrPrazoExecucao"
-                  type="number"
+                  type="text"
+                  inputMode="numeric"
                   value={formData.nrPrazoExecucao}
-                  onChange={(e) => updateFormData('nrPrazoExecucao', e.target.value)}
+                  onChange={handleNrPrazoExecucaoChange}
                   placeholder="Digite o prazo em dias"
                 />
               </div>
@@ -436,12 +468,12 @@ const TabelaIntervencao = () => {
             </div>
 
             <div className="flex gap-4 justify-center pt-6">
-              <Button
-                onClick={generateTxtFile}
+              <Button 
+                onClick={generateTxtFile} 
                 disabled={!isFormValid()}
                 className="px-8"
               >
-                Gerar Arquivo
+                Gerar Arquivo TXT
               </Button>
               <Button type="button" variant="outline" onClick={handleClear} className="px-8">
                 Limpar Campos

@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -41,6 +42,13 @@ const IntervencaoAcaoPlanejamento = () => {
       ...prev,
       [field]: value
     }));
+  };
+
+  const handleNumericInputChange = (field: keyof FormData, value: string, maxLength?: number) => {
+    const numericValue = value.replace(/[^0-9]/g, '');
+    if (!maxLength || numericValue.length <= maxLength) {
+      handleInputChange(field, numericValue);
+    }
   };
 
   const validateForm = (): boolean => {
@@ -173,14 +181,10 @@ const IntervencaoAcaoPlanejamento = () => {
                 <div className="space-y-2">
                   <label className="text-sm font-medium">Origem da Ação (máx. 7 números)</label>
                   <Input
-                    type="number"
+                    type="text"
+                    inputMode="numeric"
                     value={formData.idOrigemAcao}
-                    onChange={(e) => {
-                      const value = e.target.value;
-                      if (value.length <= 7) {
-                        handleInputChange('idOrigemAcao', value);
-                      }
-                    }}
+                    onChange={(e) => handleNumericInputChange('idOrigemAcao', e.target.value, 7)}
                     placeholder="Digite a origem da ação"
                     maxLength={7}
                   />
@@ -189,14 +193,10 @@ const IntervencaoAcaoPlanejamento = () => {
                 <div className="space-y-2">
                   <label className="text-sm font-medium">Código da Ação (máx. 4 caracteres)</label>
                   <Input
-                    type="number"
+                    type="text"
+                    inputMode="numeric"
                     value={formData.cdAcao}
-                    onChange={(e) => {
-                      const value = e.target.value;
-                      if (value.length <= 4) {
-                        handleInputChange('cdAcao', value);
-                      }
-                    }}
+                    onChange={(e) => handleNumericInputChange('cdAcao', e.target.value, 4)}
                     placeholder="Digite o código da ação"
                     maxLength={4}
                   />
@@ -205,14 +205,10 @@ const IntervencaoAcaoPlanejamento = () => {
                 <div className="space-y-2">
                   <label className="text-sm font-medium">Código Controle Lei Ato (máx. 7 números)</label>
                   <Input
-                    type="number"
+                    type="text"
+                    inputMode="numeric"
                     value={formData.cdControleLeiAto}
-                    onChange={(e) => {
-                      const value = e.target.value;
-                      if (value.length <= 7) {
-                        handleInputChange('cdControleLeiAto', value);
-                      }
-                    }}
+                    onChange={(e) => handleNumericInputChange('cdControleLeiAto', e.target.value, 7)}
                     placeholder="Digite o código controle lei ato"
                     maxLength={7}
                   />
@@ -221,9 +217,10 @@ const IntervencaoAcaoPlanejamento = () => {
                 <div className="space-y-2">
                   <label className="text-sm font-medium">Código da Intervenção</label>
                   <Input
-                    type="number"
+                    type="text"
+                    inputMode="numeric"
                     value={formData.cdIntervencao}
-                    onChange={(e) => handleInputChange('cdIntervencao', e.target.value)}
+                    onChange={(e) => handleNumericInputChange('cdIntervencao', e.target.value)}
                     placeholder="Digite o código da intervenção"
                   />
                 </div>
