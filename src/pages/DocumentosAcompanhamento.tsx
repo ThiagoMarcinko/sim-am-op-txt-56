@@ -92,9 +92,7 @@ const DocumentosAcompanhamento = () => {
     return true;
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    
+  const handleSubmit = () => {
     if (!validateForm()) {
       return;
     }
@@ -134,7 +132,7 @@ const DocumentosAcompanhamento = () => {
             <CardTitle className="text-3xl font-bold text-center">Documentos de Acompanhamento</CardTitle>
           </CardHeader>
           <CardContent>
-            <form onSubmit={handleSubmit} className="space-y-6">
+            <form className="space-y-6">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <EntidadeSelect
                   value={formData.idPessoa}
