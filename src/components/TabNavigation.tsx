@@ -23,24 +23,34 @@ const TabNavigation = () => {
     { value: '/empenho-intervencao', label: 'Empenho X Intervenção' },
   ];
 
+  // Dividir as abas em grupos de 4
+  const tabRows = [];
+  for (let i = 0; i < tabs.length; i += 4) {
+    tabRows.push(tabs.slice(i, i + 4));
+  }
+
   return (
     <div className="w-full bg-background border-b sticky top-0 z-50">
-      <div className="container mx-auto px-4">
+      <div className="container mx-auto px-4 py-2">
         <Tabs value={location.pathname} className="w-full">
-          <TabsList className="h-12 grid grid-cols-7 lg:grid-cols-14 w-full bg-transparent">
-            {tabs.map((tab) => (
-              <TabsTrigger
-                key={tab.value}
-                value={tab.value}
-                asChild
-                className="text-xs whitespace-nowrap overflow-hidden text-ellipsis px-2"
-              >
-                <Link to={tab.value} className="w-full">
-                  {tab.label}
-                </Link>
-              </TabsTrigger>
+          <div className="space-y-2">
+            {tabRows.map((row, rowIndex) => (
+              <TabsList key={rowIndex} className="h-10 grid w-full bg-transparent" style={{ gridTemplateColumns: `repeat(${row.length}, 1fr)` }}>
+                {row.map((tab) => (
+                  <TabsTrigger
+                    key={tab.value}
+                    value={tab.value}
+                    asChild
+                    className="text-xs whitespace-nowrap overflow-hidden text-ellipsis px-2"
+                  >
+                    <Link to={tab.value} className="w-full">
+                      {tab.label}
+                    </Link>
+                  </TabsTrigger>
+                ))}
+              </TabsList>
             ))}
-          </TabsList>
+          </div>
         </Tabs>
       </div>
     </div>
