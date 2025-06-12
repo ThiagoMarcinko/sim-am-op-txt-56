@@ -1,10 +1,12 @@
+
 import React, { useState } from 'react';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { useToast } from '@/hooks/use-toast';
+import { useFileDownload } from '@/hooks/useFileDownload';
+import EntidadeSelect from '@/components/forms/EntidadeSelect';
+import AnoSelect from '@/components/forms/AnoSelect';
+import NumericInput from '@/components/forms/NumericInput';
+import FormActions from '@/components/forms/FormActions';
 
 interface FormData {
   idPessoa: string;
@@ -15,6 +17,7 @@ interface FormData {
 
 const IntervencaoBem = () => {
   const { toast } = useToast();
+  const { downloadFile } = useFileDownload();
   const [formData, setFormData] = useState<FormData>({
     idPessoa: '',
     cdIntervencao: '',
@@ -66,29 +69,14 @@ const IntervencaoBem = () => {
     return true;
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    
+  const handleSubmit = () => {
     if (!validateForm()) {
       return;
     }
 
     const content = `${formData.idPessoa}|${formData.cdIntervencao}|${formData.nrAnoIntervencao}|${formData.cdBem}|`;
 
-    const blob = new Blob([content], { type: 'text/plain' });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = 'IntervencaoXBem.txt';
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-    URL.revokeObjectURL(url);
-
-    toast({
-      title: "Sucesso",
-      description: "Arquivo IntervencaoXBem.txt gerado com sucesso!",
-    });
+    downloadFile(content, 'IntervencaoXBem.txt', "Arquivo IntervencaoXBem.txt gerado com sucesso!");
   };
 
   const handleClear = () => {
@@ -97,11 +85,6 @@ const IntervencaoBem = () => {
       cdIntervencao: '',
       nrAnoIntervencao: '',
       cdBem: '',
-    });
-
-    toast({
-      title: "Formulário Limpo",
-      description: "Todos os campos foram limpos.",
     });
   };
 
@@ -112,12 +95,6 @@ const IntervencaoBem = () => {
     }));
   };
 
-  const handleNumericInputChange = (field: keyof FormData, value: string) => {
-    // Allow only numbers
-    const numericValue = value.replace(/[^0-9]/g, '');
-    updateFormData(field, numericValue);
-  };
-
   return (
     <div className="p-6">
       <div className="max-w-4xl mx-auto">
@@ -125,77 +102,38 @@ const IntervencaoBem = () => {
           <CardHeader>
             <CardTitle className="text-3xl font-bold text-center">Intervenção X Bem</CardTitle>
           </CardHeader>
-          <CardContent>
-            <form onSubmit={handleSubmit} className="space-y-6">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div className="space-y-2">
-                  <Label htmlFor="idPessoa">Identificação da Entidade</Label>
-                  <Select value={formData.idPessoa} onValueChange={(value) => updateFormData('idPessoa', value)}>
-                    <SelectTrigger>
-                      <SelectValue placeholder="Selecione a entidade" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="12377">Mangueirinha</SelectItem>
-                      <SelectItem value="12203">Bandeirantes</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </div>
+          <CardContent className="space-y-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <EntidadeSelect 
+                value={formData.idPessoa} 
+                onChange={(value) => updateFormData('idPessoa', value)} 
+              />
 
-                <div className="space-y-2">
-                  <Label htmlFor="cdIntervencao">Código da Intervenção</Label>
-                  <Input
-                    id="cdIntervencao"
-                    type="text"
-                    inputMode="numeric"
-                    value={formData.cdIntervencao}
-                    onChange={(e) => handleNumericInputChange('cdIntervencao', e.target.value)}
-                    placeholder="Digite o código"
-                  />
-                </div>
+              <NumericInput
+                label="Código da Intervenção"
+                value={formData.cdIntervencao}
+                onChange={(value) => updateFormData('cdIntervencao', value)}
+                placeholder="Digite o código"
+              />
 
-                <div className="space-y-2">
-                  <Label htmlFor="nrAnoIntervencao">Ano da Intervenção</Label>
-                  <Select value={formData.nrAnoIntervencao} onValueChange={(value) => updateFormData('nrAnoIntervencao', value)}>
-                    <SelectTrigger>
-                      <SelectValue placeholder="Selecione o ano" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="2023">2023</SelectItem>
-                      <SelectItem value="2024">2024</SelectItem>
-                      <SelectItem value="2025">2025</SelectItem>
-                      <SelectItem value="2026">2026</SelectItem>
-                      <SelectItem value="2027">2027</SelectItem>
-                      <SelectItem value="2028">2028</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </div>
+              <AnoSelect 
+                value={formData.nrAnoIntervencao} 
+                onChange={(value) => updateFormData('nrAnoIntervencao', value)} 
+              />
 
-                <div className="space-y-2">
-                  <Label htmlFor="cdBem">Código do Bem</Label>
-                  <Input
-                    id="cdBem"
-                    type="text"
-                    inputMode="numeric"
-                    value={formData.cdBem}
-                    onChange={(e) => handleNumericInputChange('cdBem', e.target.value)}
-                    placeholder="Digite o código do bem"
-                  />
-                </div>
-              </div>
+              <NumericInput
+                label="Código do Bem"
+                value={formData.cdBem}
+                onChange={(value) => updateFormData('cdBem', value)}
+                placeholder="Digite o código do bem"
+              />
+            </div>
 
-              <div className="flex gap-4 justify-center pt-6">
-                <Button 
-                  type="submit" 
-                  disabled={!isFormValid()}
-                  className="px-8"
-                >
-                  Gerar Arquivo
-                </Button>
-                <Button type="button" variant="outline" onClick={handleClear} className="px-8">
-                  Limpar Campos
-                </Button>
-              </div>
-            </form>
+            <FormActions
+              onSubmit={handleSubmit}
+              onClear={handleClear}
+              isFormValid={isFormValid()}
+            />
           </CardContent>
         </Card>
       </div>

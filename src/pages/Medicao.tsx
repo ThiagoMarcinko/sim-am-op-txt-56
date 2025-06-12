@@ -1,11 +1,15 @@
 
 import React, { useState } from 'react';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { useToast } from '@/hooks/use-toast';
+import { useFileDownload } from '@/hooks/useFileDownload';
+import EntidadeSelect from '@/components/forms/EntidadeSelect';
+import AnoSelect from '@/components/forms/AnoSelect';
+import NumericInput from '@/components/forms/NumericInput';
+import FormActions from '@/components/forms/FormActions';
+import OrigemAcompanhamentoSelect from '@/components/forms/OrigemAcompanhamentoSelect';
+import TipoMedicaoSelect from '@/components/forms/TipoMedicaoSelect';
+import PercentualInput from '@/components/forms/PercentualInput';
 
 interface FormData {
   idPessoa: string;
@@ -19,6 +23,7 @@ interface FormData {
 
 const Medicao = () => {
   const { toast } = useToast();
+  const { downloadFile } = useFileDownload();
   const [formData, setFormData] = useState<FormData>({
     idPessoa: '',
     cdIntervencao: '',
@@ -110,29 +115,14 @@ const Medicao = () => {
     return true;
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    
+  const handleSubmit = () => {
     if (!validateForm()) {
       return;
     }
 
     const content = `${formData.idPessoa}|${formData.cdIntervencao}|${formData.nrAnoIntervencao}|${formData.idOrigemAcompanhamento}|${formData.nrAcompanhamento}|${formData.idTipoMedicao}|${formData.nrPercentualFisicoMedicao}|`;
 
-    const blob = new Blob([content], { type: 'text/plain' });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = 'Medicao.txt';
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-    URL.revokeObjectURL(url);
-
-    toast({
-      title: "Sucesso",
-      description: "Arquivo Medicao.txt gerado com sucesso!",
-    });
+    downloadFile(content, 'Medicao.txt', "Arquivo Medicao.txt gerado com sucesso!");
   };
 
   const handleClear = () => {
@@ -145,11 +135,6 @@ const Medicao = () => {
       idTipoMedicao: '',
       nrPercentualFisicoMedicao: '',
     });
-
-    toast({
-      title: "Formulário Limpo",
-      description: "Todos os campos foram limpos.",
-    });
   };
 
   const updateFormData = (field: keyof FormData, value: string) => {
@@ -159,25 +144,6 @@ const Medicao = () => {
     }));
   };
 
-  const handleCdIntervencaoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value.replace(/[^0-9]/g, '');
-    updateFormData('cdIntervencao', value);
-  };
-
-  const handleNrAcompanhamentoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value.replace(/[^0-9]/g, '');
-    updateFormData('nrAcompanhamento', value);
-  };
-
-  const handlePercentualChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value;
-    const numericValue = parseFloat(value);
-    
-    if (value === '' || (!isNaN(numericValue) && numericValue >= 0 && numericValue <= 100)) {
-      updateFormData('nrPercentualFisicoMedicao', value);
-    }
-  };
-
   return (
     <div className="min-h-screen bg-background p-6">
       <div className="max-w-4xl mx-auto">
@@ -185,117 +151,55 @@ const Medicao = () => {
           <CardHeader>
             <CardTitle className="text-3xl font-bold text-center">Medição</CardTitle>
           </CardHeader>
-          <CardContent>
-            <form onSubmit={handleSubmit} className="space-y-6">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div className="space-y-2">
-                  <Label htmlFor="idPessoa">Identificação da Entidade</Label>
-                  <Select value={formData.idPessoa} onValueChange={(value) => updateFormData('idPessoa', value)}>
-                    <SelectTrigger>
-                      <SelectValue placeholder="Selecione a entidade" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="12377">Mangueirinha</SelectItem>
-                      <SelectItem value="12203">Bandeirantes</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </div>
+          <CardContent className="space-y-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <EntidadeSelect 
+                value={formData.idPessoa} 
+                onChange={(value) => updateFormData('idPessoa', value)} 
+              />
 
-                <div className="space-y-2">
-                  <Label htmlFor="cdIntervencao">Código da Intervenção</Label>
-                  <Input
-                    id="cdIntervencao"
-                    type="text"
-                    inputMode="numeric"
-                    value={formData.cdIntervencao}
-                    onChange={handleCdIntervencaoChange}
-                    placeholder="Digite o código"
-                  />
-                </div>
+              <NumericInput
+                label="Código da Intervenção"
+                value={formData.cdIntervencao}
+                onChange={(value) => updateFormData('cdIntervencao', value)}
+                placeholder="Digite o código"
+              />
 
-                <div className="space-y-2">
-                  <Label htmlFor="nrAnoIntervencao">Ano da Intervenção</Label>
-                  <Select value={formData.nrAnoIntervencao} onValueChange={(value) => updateFormData('nrAnoIntervencao', value)}>
-                    <SelectTrigger>
-                      <SelectValue placeholder="Selecione o ano" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="2023">2023</SelectItem>
-                      <SelectItem value="2024">2024</SelectItem>
-                      <SelectItem value="2025">2025</SelectItem>
-                      <SelectItem value="2026">2026</SelectItem>
-                      <SelectItem value="2027">2027</SelectItem>
-                      <SelectItem value="2028">2028</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </div>
+              <AnoSelect 
+                value={formData.nrAnoIntervencao} 
+                onChange={(value) => updateFormData('nrAnoIntervencao', value)} 
+              />
 
-                <div className="space-y-2">
-                  <Label htmlFor="idOrigemAcompanhamento">Origem do Acompanhamento</Label>
-                  <Select value={formData.idOrigemAcompanhamento} onValueChange={(value) => updateFormData('idOrigemAcompanhamento', value)}>
-                    <SelectTrigger>
-                      <SelectValue placeholder="Selecione a origem" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="1">Jurisdicionado</SelectItem>
-                      <SelectItem value="2">TCE-PR</SelectItem>
-                      <SelectItem value="3">CREA-PR</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </div>
+              <OrigemAcompanhamentoSelect
+                value={formData.idOrigemAcompanhamento}
+                onChange={(value) => updateFormData('idOrigemAcompanhamento', value)}
+              />
 
-                <div className="space-y-2">
-                  <Label htmlFor="nrAcompanhamento">Número do Acompanhamento</Label>
-                  <Input
-                    id="nrAcompanhamento"
-                    type="text"
-                    inputMode="numeric"
-                    value={formData.nrAcompanhamento}
-                    onChange={handleNrAcompanhamentoChange}
-                    placeholder="Digite o número"
-                  />
-                </div>
+              <NumericInput
+                label="Número do Acompanhamento"
+                value={formData.nrAcompanhamento}
+                onChange={(value) => updateFormData('nrAcompanhamento', value)}
+                placeholder="Digite o número"
+              />
 
-                <div className="space-y-2">
-                  <Label htmlFor="idTipoMedicao">Tipo da Medição</Label>
-                  <Select value={formData.idTipoMedicao} onValueChange={(value) => updateFormData('idTipoMedicao', value)}>
-                    <SelectTrigger>
-                      <SelectValue placeholder="Selecione o tipo" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="1">Execução Indireta - Contrato</SelectItem>
-                      <SelectItem value="2">Execução Indireta - Aditivo</SelectItem>
-                      <SelectItem value="3">Execução Direta</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </div>
+              <TipoMedicaoSelect
+                value={formData.idTipoMedicao}
+                onChange={(value) => updateFormData('idTipoMedicao', value)}
+              />
 
-                <div className="space-y-2">
-                  <Label htmlFor="nrPercentualFisicoMedicao">Percentual Físico da Medição (%)</Label>
-                  <Input
-                    id="nrPercentualFisicoMedicao"
-                    type="text"
-                    inputMode="decimal"
-                    value={formData.nrPercentualFisicoMedicao}
-                    onChange={handlePercentualChange}
-                    placeholder="0.00 - 100.00"
-                  />
-                </div>
-              </div>
+              <PercentualInput
+                label="Percentual Físico da Medição (%)"
+                value={formData.nrPercentualFisicoMedicao}
+                onChange={(value) => updateFormData('nrPercentualFisicoMedicao', value)}
+                placeholder="0.00 - 100.00"
+              />
+            </div>
 
-              <div className="flex gap-4 justify-center pt-6">
-                <Button 
-                  type="submit" 
-                  disabled={!isFormValid()}
-                  className="px-8"
-                >
-                  Gerar Arquivo
-                </Button>
-                <Button type="button" variant="outline" onClick={handleClear} className="px-8">
-                  Limpar Campos
-                </Button>
-              </div>
-            </form>
+            <FormActions
+              onSubmit={handleSubmit}
+              onClear={handleClear}
+              isFormValid={isFormValid()}
+            />
           </CardContent>
         </Card>
       </div>

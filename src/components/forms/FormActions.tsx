@@ -17,13 +17,18 @@ const FormActions = ({
   submitText = "Gerar Arquivo",
   clearText = "Limpar Campos" 
 }: FormActionsProps) => {
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    onSubmit();
+  };
+
   return (
     <div className="flex gap-4 justify-center pt-6">
       <Button 
         type="submit" 
         disabled={!isFormValid}
         className="px-8"
-        onClick={onSubmit}
+        onClick={handleSubmit}
       >
         {submitText}
       </Button>
