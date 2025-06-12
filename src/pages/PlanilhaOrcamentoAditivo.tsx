@@ -159,19 +159,26 @@ const PlanilhaOrcamentoAditivo = () => {
     return true;
   };
 
-  const generateTxtFileWithPipeFormat = () => {
-    console.log('Função generateTxtFileWithPipeFormat executada - versão atualizada');
-    
+  const generateTxtFile = () => {
     if (!validateForm()) {
       return;
     }
 
-    // Formato com pipes (|) separando os valores
-    const content = `${formData.idPessoa}|${formData.cdIntervencao}|${formData.nrAnoIntervencao}|${formData.tipoDocumentoResponsavelOrcamento}|${formData.nrDocumentoResponsavelOrcamento}|${formData.cdControleLeiAto}|${formData.idTipoAtoContrato}|${formData.idTipoOrigemContrato}|${formData.nrContrato}|${formData.nrAnoContrato}|${formData.nrCNPJOrigem}|${formData.nrAditivoContrato}|${formData.nrAnoAditivoContrato}|`;
+    const txtContent = `idPessoa=${formData.idPessoa}
+cdIntervencao=${formData.cdIntervencao}
+nrAnoIntervencao=${formData.nrAnoIntervencao}
+tipoDocumentoResponsavelOrcamento=${formData.tipoDocumentoResponsavelOrcamento}
+nrDocumentoResponsavelOrcamento=${formData.nrDocumentoResponsavelOrcamento}
+cdControleLeiAto=${formData.cdControleLeiAto}
+idTipoAtoContrato=${formData.idTipoAtoContrato}
+idTipoOrigemContrato=${formData.idTipoOrigemContrato}
+nrContrato=${formData.nrContrato}
+nrAnoContrato=${formData.nrAnoContrato}
+nrCNPJOrigem=${formData.nrCNPJOrigem}
+nrAditivoContrato=${formData.nrAditivoContrato}
+nrAnoAditivoContrato=${formData.nrAnoAditivoContrato}`;
 
-    console.log('Conteúdo gerado:', content);
-
-    const blob = new Blob([content], { type: 'text/plain' });
+    const blob = new Blob([txtContent], { type: 'text/plain' });
     const url = window.URL.createObjectURL(blob);
     const link = document.createElement('a');
     link.href = url;
@@ -183,7 +190,7 @@ const PlanilhaOrcamentoAditivo = () => {
 
     toast({
       title: "Arquivo Gerado",
-      description: "O arquivo PlanilhaExecucaoIndiretaAditivo.txt foi baixado com sucesso no formato correto (valores separados por pipes).",
+      description: "O arquivo PlanilhaExecucaoIndiretaAditivo.txt foi baixado com sucesso.",
     });
   };
 
@@ -434,9 +441,9 @@ const PlanilhaOrcamentoAditivo = () => {
             </div>
 
             <div className="mt-8 flex justify-center gap-4">
-              <Button onClick={generateTxtFileWithPipeFormat} className="flex items-center gap-2">
+              <Button onClick={generateTxtFile} className="flex items-center gap-2">
                 <Download className="w-4 h-4" />
-                Gerar Arquivo (Formato Correto)
+                Gerar Arquivo
               </Button>
               <Button onClick={handleClear} variant="outline" className="flex items-center gap-2">
                 Limpar Campos
