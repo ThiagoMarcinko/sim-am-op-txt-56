@@ -6,11 +6,12 @@ const Index = () => {
   return (
     <div className="min-h-screen flex items-center justify-center bg-background">
       <div className="text-center space-y-6">
-        <h1 className="text-4xl font-bold mb-4">Sistema de Intervenções</h1>
-        <p className="text-xl text-muted-foreground mb-8">Gerencie suas tabelas de intervenção</p>
+        <p className="text-xl font-bold">
+          Preenchimento do SIM-AM: Módulo de Obras Públicas
+        </p>
         <Link to="/tabela-intervencao">
           <Button size="lg" className="px-8 py-3 text-lg">
-            Acessar Tabela Intervenção
+            Iniciar o preenchimento
           </Button>
         </Link>
       </div>
