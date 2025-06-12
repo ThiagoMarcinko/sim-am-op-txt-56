@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -26,6 +27,10 @@ const DocumentosAcompanhamento = () => {
     nrAcompanhamento: '',
     cdControleLeiAto: '',
   });
+
+  const isFormValid = () => {
+    return Object.values(formData).every(value => value !== '');
+  };
 
   const validateForm = (): boolean => {
     if (!formData.idPessoa) {
@@ -236,7 +241,11 @@ Código Controle Lei Ato: ${formData.cdControleLeiAto}`;
                 </div>
 
                 <div className="flex gap-4 justify-center pt-6">
-                  <Button type="submit" className="px-8">
+                  <Button 
+                    type="submit" 
+                    className="px-8"
+                    disabled={!isFormValid()}
+                  >
                     Gerar Arquivo
                   </Button>
                   <Button type="button" variant="outline" onClick={handleClear} className="px-8">
