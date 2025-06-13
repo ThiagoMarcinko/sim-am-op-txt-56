@@ -236,7 +236,7 @@ const TabelaIntervencao = () => {
               onSubmit={generateTxtFile}
               onClear={handleClear}
               isFormValid={isFormValid()}
-              submitText="Gerar Arquivo TXT"
+              submitText="Gerar Arquivo"
             />
           </CardContent>
         </Card>
